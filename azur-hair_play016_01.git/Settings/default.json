@@ -1,0 +1,493 @@
+{
+  "title": "Azure-HAIR_play_016_01",
+  "name": "default",
+  "debug": {
+    "value": false,
+    "type": "boolean"
+  },
+  "debug-logger": {
+    "value": "custom",
+    "type": "select"
+  },
+  "game-code-url": "dist/main.js",
+  "target-url": {
+    "ios": "https://apps.apple.com/us/app/hair-tattoo-barber-shop-game/id1621682855",
+    "android": "https://play.google.com/store/apps/details?id=com.wn.hairtattoo&hl=en_US",
+    "amazon": "",
+    "default": "https://play.google.com/store/apps/details?id=com.wn.hairtattoo&hl=en_US",
+    "value": "https://play.google.com/store/apps/details?id=com.wn.hairtattoo&hl=en_US",
+    "type": "string"
+  },
+  "loading-overlay-styles": {
+    "type": "css",
+    "value": {}
+  },
+  "loading-overlay-show-time": {
+    "type": "number",
+    "value": 200
+  },
+  "loading-overlay-hide-time": {
+    "type": "number",
+    "value": 1000
+  },
+  "loading-background-styles": {
+    "type": "css",
+    "value": {
+      "background": "linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url($background-loading$) center / cover",
+      "filter": "blur(5px)",
+      "transform": "scale(1.05)"
+    }
+  },
+  "loading-icon-styles": {
+    "type": "css",
+    "value": {
+      "background": "url($logotype$) no-repeat scroll center center / contain",
+      "left:portrait": "20.7%",
+      "right:portrait": "20.7%",
+      "top:portrait": "30.1%",
+      "bottom:portrait": "40.6%",
+      "left:landscape": "33.5%",
+      "right:landscape": "33.5%",
+      "top:landscape": "20.7%",
+      "bottom:landscape": "30.1%",
+      "filter": "drop-shadow(0px 0px 5px #00000022)"
+    }
+  },
+  "loading-icon-publisher-styles": {
+    "type": "css",
+    "value": {
+      "background": "",
+      "width": "23%",
+      "height": "6%",
+      "filter": "drop-shadow(0px 0px 5px #000000)"
+    },
+    "hideInPortfolio": true
+  },
+  "loading-progress-styles": {
+    "type": "css",
+    "value": {
+      "background": "rgba(255, 255, 255, 0.2)",
+      "left:portrait": "34%",
+      "right:portrait": "34%",
+      "top:portrait": "85%",
+      "bottom:portrait": "5%",
+      "left:landscape": "40%",
+      "right:landscape": "40%",
+      "top:landscape": "85%",
+      "bottom:landscape": "10%",
+      "filter": "drop-shadow(0px 0px 3px #00000022)"
+    }
+  },
+  "loading-progress-fill-styles": {
+    "type": "css",
+    "value": {
+      "background": "rgba(255, 255, 255, 0.8)"
+    }
+  },
+  "loading-code-progress-percent": 0.5,
+  "loading-click-out": {
+    "type": "boolean",
+    "value": true
+  },
+  "loading-text": {
+    "type": "string",
+    "value": ""
+  },
+  "loading-text-styles": {
+    "type": "css",
+    "value": {
+      "color": "#ffffff",
+      "fontFamily": "Arial",
+      "fontWeight": "bold",
+      "fontSize:portrait": "16px",
+      "fontSize:landscape": "16px",
+      "textAlign": "center",
+      "left:portrait": "15%",
+      "right:portrait": "15%",
+      "top:portrait": "60%",
+      "bottom:portrait": "20%",
+      "left:landscape": "35%",
+      "right:landscape": "35%",
+      "top:landscape": "70%",
+      "bottom:landscape": "15%"
+    }
+  },
+  "loading-disable-in-base64": {
+    "type": "boolean",
+    "value": true
+  },
+  "roughnessMan": {
+    "value": 0.67,
+    "type": "number",
+    "title": "roughness Man",
+    "section": "main",
+    "control": "range",
+    "min": 0,
+    "max": 10,
+    "step": 0.01,
+    "autoApplyChanges": true
+  },
+  "metalnessMan": {
+    "value": 0.39,
+    "type": "number",
+    "title": "metalness Man",
+    "section": "main",
+    "control": "range",
+    "min": 0,
+    "max": 10,
+    "step": 0.01,
+    "autoApplyChanges": true
+  },
+  "roughnessScene": {
+    "value": 0,
+    "type": "number",
+    "title": "roughness Scene",
+    "description": "",
+    "section": "main",
+    "control": "range",
+    "min": 0,
+    "max": 10,
+    "step": 0.01,
+    "autoApplyChanges": true
+  },
+  "metalnessScene": {
+    "value": 0,
+    "type": "number",
+    "title": "metalness Scene",
+    "description": "",
+    "section": "main",
+    "control": "range",
+    "min": 0,
+    "max": 10,
+    "step": 0.01,
+    "autoApplyChanges": true
+  },
+  "Face-color": {
+    "value": "#FFF0F0",
+    "type": "string",
+    "section": "main",
+    "control": "color",
+    "title": "Face-color",
+    "autoApplyChanges": true
+  },
+  "Cape-color": {
+    "value": "#282876",
+    "type": "string",
+    "section": "main",
+    "control": "color",
+    "title": "Cape-color",
+    "autoApplyChanges": true
+  },
+  "directional-light-pos-x": {
+    "value": 10.55,
+    "type": "number",
+    "section": "main",
+    "control": "range",
+    "min": -400,
+    "max": 400,
+    "step": 0.01,
+    "title": "Directional light position X",
+    "autoApplyChanges": true
+  },
+  "directional-light-pos-y": {
+    "value": 62.47,
+    "type": "number",
+    "section": "main",
+    "control": "range",
+    "min": -400,
+    "max": 400,
+    "step": 0.01,
+    "title": "Directional light position Y",
+    "autoApplyChanges": true
+  },
+  "directional-light-pos-z": {
+    "value": 107.91,
+    "type": "number",
+    "section": "main",
+    "control": "range",
+    "min": -400,
+    "max": 400,
+    "step": 0.01,
+    "title": "Directional light position Z",
+    "autoApplyChanges": true
+  },
+  "ambient-light-pos-x": {
+    "value": -400,
+    "type": "number",
+    "section": "main",
+    "control": "range",
+    "min": -400,
+    "max": 400,
+    "step": 0.01,
+    "title": "ambient light position X",
+    "autoApplyChanges": true
+  },
+  "ambient-light-pos-y": {
+    "value": -400,
+    "type": "number",
+    "section": "main",
+    "control": "range",
+    "min": -400,
+    "max": 400,
+    "step": 0.01,
+    "title": "ambient light position Y",
+    "autoApplyChanges": true
+  },
+  "ambient-light-pos-z": {
+    "value": -400,
+    "type": "number",
+    "section": "main",
+    "control": "range",
+    "min": -400,
+    "max": 400,
+    "step": 0.01,
+    "title": "ambient light position Z",
+    "autoApplyChanges": true
+  },
+  "directional-light-intensity": {
+    "value": 5.29,
+    "type": "number",
+    "section": "main",
+    "control": "range",
+    "min": 0,
+    "max": 30,
+    "step": 0.01,
+    "title": "directional-light-intensity",
+    "autoApplyChanges": true
+  },
+  "ambient-light-intensity": {
+    "value": 2.13,
+    "type": "number",
+    "section": "main",
+    "control": "range",
+    "min": 0,
+    "max": 30,
+    "step": 0.01,
+    "title": "ambient-light-intensity",
+    "autoApplyChanges": true
+  },
+  "ambient-light-color": {
+    "value": "#FFE5F3",
+    "type": "string",
+    "section": "main",
+    "control": "color",
+    "title": "Ambient light color",
+    "autoApplyChanges": true
+  },
+  "Scratches-color": {
+    "value": "#9E1F1F",
+
+    "type": "string",
+    "section": "main",
+    "control": "color",
+    "title": "Scratches-color",
+    "autoApplyChanges": true
+  },
+  "directional-light-color": {
+    "value": "#FFEDE5",
+    "type": "string",
+    "section": "main",
+    "control": "color",
+    "title": "Directional light color",
+    "autoApplyChanges": true
+  },
+  "cta-only": {
+    "type": "boolean",
+    "value": false
+  },
+  "track-events": {
+    "type": "info",
+    "value": []
+  },
+  "separated-images-in-dashboard-preview": {
+    "type": "boolean",
+    "value": true
+  },
+  "Localization": {
+    "en": {
+      "GAME TEXT": {
+        "type": "three",
+        "text": "Do you know well?"
+      },
+      "GAME_TEXT": {
+        "type": "three-text",
+        "text": "Game Text",
+        "fontFamily": "OpenSans",
+        "fontSize": 65,
+        "fill": "#000000"
+      }
+    }
+  },
+  "Assets": {
+    "background-loading": {
+      "type": "image",
+      "url": "Images/background-loading.jpg"
+    },
+    "logotype": {
+      "type": "image",
+      "url": "Images/logotype.png"
+    },
+    "close-button": {
+      "type": "image",
+      "url": "Images/close-button.png"
+    },
+    "banner-star": {
+      "type": "image",
+      "url": "Images/banner-star.png"
+    },
+    "banner-icon": {
+      "type": "image",
+      "url": "Images/banner-icon.png"
+    },
+    "icon": {
+      "type": "image",
+      "url": "Images/icon.png"
+    },
+    "blue_white 1": {
+      "type": "image",
+      "url": "Images/UI/blue_white 1.png"
+    },
+    "brush-blue": {
+      "type": "image",
+      "url": "Images/UI/brush-blue.png"
+    },
+    "brush-white": {
+      "type": "image",
+      "url": "Images/UI/brush-white.png"
+    },
+    "button 2": {
+      "type": "image",
+      "url": "Images/UI/button 2.png"
+    },
+    "Choose color": {
+      "type": "image",
+      "url": "Images/UI/Choose color.png"
+    },
+    "choose-color 2": {
+      "type": "image",
+      "url": "Images/UI/choose-color 2.png"
+    },
+    "Done": {
+      "type": "image",
+      "url": "Images/UI/Done.png"
+    },
+    "Drag": {
+      "type": "image",
+      "url": "Images/UI/Drag.png"
+    },
+    "drag 1": {
+      "type": "image",
+      "url": "Images/UI/drag 1.png"
+    },
+    "dryer-white 2": {
+      "type": "image",
+      "url": "Images/UI/dryer-white 2.png"
+    },
+    "hand 4": {
+      "type": "image",
+      "url": "Images/UI/hand 4.png"
+    },
+    "line": {
+      "type": "image",
+      "url": "Images/UI/line.png"
+    },
+    "logo_w": {
+      "type": "image",
+      "url": "Images/UI/logo_w.png"
+    },
+    "podlozka": {
+      "type": "image",
+      "url": "Images/UI/podlozka.png"
+    },
+    "purple 1": {
+      "type": "image",
+      "url": "Images/UI/purple 1.png"
+    },
+    "red 1": {
+      "type": "image",
+      "url": "Images/UI/red 1.png"
+    },
+    "ref_1": {
+      "type": "image",
+      "url": "Images/UI/ref_1.png"
+    },
+    "ref_2": {
+      "type": "image",
+      "url": "Images/UI/ref_2.png"
+    },
+    "shave-blue": {
+      "type": "image",
+      "url": "Images/UI/shave-blue.png"
+    },
+    "shave-white": {
+      "type": "image",
+      "url": "Images/UI/shave-white.png"
+    },
+    "shower-white 2": {
+      "type": "image",
+      "url": "Images/UI/shower-white 2.png"
+    },
+    "scratch_texture": {
+      "type": "image",
+      "url": "Images/UI/scratch_texture.png"
+    },
+    "pers-na-stule": {
+      "type": "glb",
+      "url": "Data/pers-na-stule_compressed.glb"
+    },
+    "britva-i-kict": {
+      "type": "glb",
+      "url": "Data/britva-i-kict2_compressed.glb"
+    },
+    "Scene": {
+      "type": "glb",
+      "url": "Data/scene_compressed.glb"
+    },
+    "bg": {
+      "type": "sound",
+      "url": "Sounds/bg.mp3",
+      "loop": true,
+      "volume": 0.5
+    },
+    "canRoll": {
+      "type": "sound",
+      "url": "Sounds/canRoll.mp3"
+    },
+    "click": {
+      "type": "sound",
+      "url": "Sounds/click.mp3"
+    },
+    "hey": {
+      "type": "sound",
+      "url": "Sounds/hey.mp3"
+    },
+    "grt": {
+      "type": "sound",
+      "url": "Sounds/grt.mp3"
+    },
+    "korotkiy-zvuk-razreza": {
+      "type": "sound",
+      "url": "Sounds/korotkiy-zvuk-razreza.mp3"
+    },
+    "och": {
+      "type": "sound",
+      "url": "Sounds/och.mp3"
+    }, "it-hrts": {
+      "type": "sound",
+      "url": "Sounds/it-hrts.mp3"
+    },
+    "wlldn": {
+      "type": "sound",
+      "url": "Sounds/wlldn.mp3"
+    },
+    "y-ct-m": {
+      "type": "sound",
+      "url": "Sounds/y-ct-m.mp3"
+    },
+    "momentRazrez": {
+      "type": "sound",
+      "url": "Sounds/momentalnyiy-razrez.mp3",
+      "loop": true
+    }
+  }
+}
