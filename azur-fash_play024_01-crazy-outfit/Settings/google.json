@@ -1,0 +1,221 @@
+﻿{
+  "title": "Azur-FASH_play024_01-Crazy-Outfit",
+  "name": "google",
+
+  //Здесь можно включить собственную отладочную консоль поверх игры
+  "debug": {"value": false, "type": "boolean"},
+  "debug-logger": {"value": "custom", "type": "select"},
+
+  //Сюда записываем адреса в магазинах приложений для рекламируемого приложения
+  "target-url": {"ios": "https://apps.apple.com/us/app/fashion-queen-dress-up-game/id6451136859",
+    "android": "https://play.google.com/store/apps/details?id=com.manekigames.fashionqueen", "amazon": "",
+    "default": "https://play.google.com/store/apps/details?id=com.manekigames.fashionqueen", "type": "string"},
+
+  //TODO: настройки экрана загрузки нужно убрать после рефакторинга и переноса всех экранов загрузки в дашборд
+  "loading-overlay-styles": {"type": "css", "value": {}},
+  "loading-overlay-show-time": {"type": "number", "value": 200},
+  "loading-overlay-hide-time": {"type": "number", "value": 1000},
+  "loading-background-styles": {"type": "css", "value": {"background": "linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url($background-loading$) center / cover", "filter": "blur(5px)", "transform": "scale(1.05)"}},
+  "loading-icon-styles": {"type": "css", "value": {"background": "url($logotype$) no-repeat scroll center center", "left:portrait": "15%", "right:portrait": "15%", "top:portrait": "25%", "bottom:portrait": "35%", "left:landscape": "28%", "right:landscape": "28%", "top:landscape": "15%", "bottom:landscape": "25%", "filter": "drop-shadow(0px 0px 5px #00000022)"}},
+  "loading-icon-publisher-styles": {"type": "css", "value": {"background": "", "width": "35%", "height": "9%", "filter": "drop-shadow(0px 0px 5px #000000)"}, "hideInPortfolio": true},
+  "loading-progress-styles": {"type": "css", "value": {"background": "rgba(255, 255, 255, 0.2)", "left:portrait": "34%", "right:portrait": "34%", "top:portrait": "85%", "bottom:portrait": "5%", "left:landscape": "40%", "right:landscape": "40%", "top:landscape": "85%", "bottom:landscape": "10%", "filter": "drop-shadow(0px 0px 3px #00000022)"}},
+  "loading-progress-fill-styles": {"type": "css", "value": {"background": "rgba(255, 255, 255, 0.8)"}},
+  "loading-code-progress-percent": 0.5,
+  "loading-click-out": {"type": "boolean", "value": true},
+  "loading-text": {"type": "string", "value": ""},
+  "loading-text-styles": {"type": "css", "value": {"color": "#ffffff", "fontFamily": "Arial", "fontWeight": "bold", "fontSize:portrait": "16px", "fontSize:landscape": "16px", "textAlign": "center", "left:portrait": "15%", "right:portrait": "15%", "top:portrait": "60%", "bottom:portrait": "20%", "left:landscape": "35%", "right:landscape": "35%", "top:landscape": "70%", "bottom:landscape": "15%"}},
+  "loading-disable-in-base64": {"type": "boolean", "value": true},
+
+  //Показывать сразу конечный экран
+  "cta-only": {"type": "boolean", "value": false},
+
+  "game-code-url": "dist/main.js",
+
+  "gameplay-timeout": {"default": 0, "type": "number"},
+  "autoplay-timeout": {"default": 0, "type": "number"},
+  "idle-timeout": {"default": 0, "type": "number"},
+  "tutorial-timeout": {"default": 3000, "type": "number"},
+
+  "tutorial": {"type": "boolean", "value": true},
+
+  "camera-fov": {"value": 45, "type": "number" , "title": "Camera FOV", "description": "", "section": "main", "control": "range", "min": 20, "max": 80, "step": 0.1, "autoApplyChanges": true},
+
+  "ambient-light-intensity": {"value": 1.91, "type": "number" , "title": "Ambient light intensity", "description": "", "section": "main", "control": "range", "min": 0.1, "max": 80, "step": 0.1, "autoApplyChanges": true},
+
+  "directional-light-intensity": {"value": 1.91, "type": "number" , "title": "Directional light intensity", "description": "", "section": "main", "control": "range", "min": 0.1, "max": 80, "step": 0.1, "autoApplyChanges": true},
+
+  "directional-light-pos-x": {"value": -0.43, "type": "number", "section": "main", "control": "range", "min": -20, "max": 20, "step": 0.01, "title": "Directional light position X", "autoApplyChanges": true},
+
+  "directional-light-pos-y": {"value": 5, "type": "number", "section": "main", "control": "range", "min": -20, "max": 20, "step": 0.01, "title": "Directional light position Y", "autoApplyChanges": true},
+
+  "directional-light-pos-z": {"value": -8.84, "type": "number", "section": "main", "control": "range", "min": -20, "max": 20, "step": 0.01, "title": "Directional light position Z", "autoApplyChanges": true},
+
+  "directional-light-color": {"value": "#FEEFDC", "type": "string", "section": "main", "control": "color", "title": "Directional light color", "autoApplyChanges": true},
+
+  "camera-elevation": {"value": 29.61, "type": "number" , "title": "Camera elevation:", "description": "", "section": "main", "control": "range", "min": 0, "max": 90, "step": 0.01, "autoApplyChanges": true},
+
+  "camera-azimuth": {"value": 12.10, "type": "number" , "title": "Camera azimuth:", "description": "", "section": "main", "control": "range", "min": 0, "max": 360, "step": 0.01, "autoApplyChanges": true},
+
+  "camera-distance": {"value": 19.67, "type": "number" , "title": "Camera distance:", "description": "", "section": "main", "control": "range", "min": 0, "max": 180, "step": 0.01, "autoApplyChanges": true},
+
+  "model-1-skin-color": {"value": "#FFAA81", "type": "string", "section": "main", "control": "color", "title": "Model 1 Skin color", "autoApplyChanges": true},
+
+  "model-1-hair-color": {"value": "#FFD38B", "type": "string", "section": "main", "control": "color", "title": "Model 1 Hair color", "autoApplyChanges": true},
+  "model-2-hair-color": {"value": "#1C1C1C", "type": "string", "section": "main", "control": "color", "title": "Model 2 Hair color", "autoApplyChanges": true},
+
+  "lip-color": {"value": "#ff0e00", "type": "string", "section": "main", "control": "color", "title": "Lip color", "autoApplyChanges": true},
+  "eyelashe-color": {"value": "#6E0500", "type": "string", "section": "main", "control": "color", "title": "Eyelashe color", "autoApplyChanges": true},
+
+  "model-1-shoes-color": {"value": "#FF0000", "type": "string", "section": "main", "control": "color", "title": "Model 1 Shoes color", "autoApplyChanges": true},
+  "model-2-shoes-color": {"value": "#00BFFF", "type": "string", "section": "main", "control": "color", "title": "Model 2 Shoes color", "autoApplyChanges": true},
+
+  "model-1-top-color": {"value": "#FF0000", "type": "string", "section": "main", "control": "color", "title": "Model 1 Top color", "autoApplyChanges": true},
+  "model-1-bottom-color": {"value": "#FF0000", "type": "string", "section": "main", "control": "color", "title": "Model 1 Bottom color", "autoApplyChanges": true},
+  "model-2-top-color": {"value": "#00BFFF", "type": "string", "section": "main", "control": "color", "title": "Model 2 Top color", "autoApplyChanges": true},
+  "model-2-bottom-color": {"value": "#00BFFF", "type": "string", "section": "main", "control": "color", "title": "Model 2 Bottom color", "autoApplyChanges": true},
+
+  "podium-top-color": {"value": "#d7d6ff", "type": "string", "section": "main", "control": "color", "title": "Podium Top color", "autoApplyChanges": true},
+  "podium-bottom-color": {"value": "#e0e0e0", "type": "string", "section": "main", "control": "color", "title": "podium-bottom-colo", "autoApplyChanges": true},
+  "podium-top-glasses": {"value": 3, "type": "number" , "title": "podium top glasses", "description": "", "section": "main", "control": "range", "min": 0, "max": 10, "step": 0.01, "autoApplyChanges": true},
+  "podium-bottom-glasses": {"value": 3, "type": "number" , "title": "podium bottom glasses", "description": "", "section": "main", "control": "range", "min": 0, "max": 10, "step": 0.01, "autoApplyChanges": true},
+  "background-color": {"value": "#0cbce8", "type": "string", "section": "main", "control": "color", "title": "background-color", "autoApplyChanges": true},
+  "build-color": {"value": "#0cbce8", "type": "string", "section": "main", "control": "color", "title": "build-color", "autoApplyChanges": true},
+  "tree-color": {"value": "#0cbce8", "type": "string", "section": "main", "control": "color", "title": "tree-color", "autoApplyChanges": true},
+  "plane-color": {"value": "#d7d6ff", "type": "string", "section": "main", "control": "color", "title": "plane-color", "autoApplyChanges": true},
+
+
+  "creative-template-device": {"value": "iPhone", "type": "select", "values": ["iPhone", "iPad", "iPhoneX"]},
+  "creative-template-orientation": {"value": "portrait", "type": "select", "values": ["portrait", "landscape"]},
+
+  "track-events": {"type": "info", "value": [
+    //{"name": "My Tracking Event", "description": "Called when user choose character"},
+  ]},
+
+  "separated-images-in-dashboard-preview": {"type": "boolean", "value": true},
+
+
+  "Localization": {
+
+    "en": {
+      "NAME_CHARACTER": {
+        "type": "three-text",
+        "text": "EMMILI",
+        "fontFamily": "BebasNeue",
+        "fontSize": 60,
+        "fill": "white",
+        "padding": 250
+      },
+
+      "SCORE_HAND": {
+        "type": "three-text",
+        "text": "0",
+        "fontFamily": "BebasNeue",
+        "fontSize": 60,
+        "fill": "#FF31BE",
+        "padding": 250
+      },
+
+      "SCORE_STAR": {
+        "type": "three-text",
+        "text": "0",
+        "fontFamily": "BebasNeue",
+        "fontSize": 50,
+        "fill": "white",
+        "padding": 250
+      }
+    }
+  },
+
+  "Assets": {
+    //Ассеты используемые в css стилях
+    "background-loading": {"type": "image", "url": "Images/background-loading.jpg"},
+    "logotype": {"type": "image", "url": "Images/logotype.png"},
+    "close-button": {"type": "image", "url": "Images/close-button.png"},
+
+    //Модели
+    "scene_podium": {"type": "glb", "url": "Data/scene_podium.glb"},
+    "character": {"type": "glb", "url": "Data/character_compressed.glb"},
+    "hand": {"type": "glb", "url": "Data/hand.glb"},
+
+    //UI
+    "bottom-panel": {"type": "image", "url": "Images/UI/bottom-panel.jpg"},
+    "button": {"type": "image", "url": "Images/UI/button.png"},
+    "hand-tutorial": {"type": "image", "url": "Images/UI/hand.png"},
+    "cloth-panel": {"type": "image", "url": "Images/UI/cloth-panel.png"},
+    "cloth-button": {"type": "image", "url": "Images/UI/cloth-button.png"},
+    "cloth-button-correct": {"type": "image", "url": "Images/UI/cloth-button_correct.png"},
+
+    "arrow": {"type": "image", "url": "Images/UI/arrow.png"},
+    "emoji_1": {"type": "image", "url": "Images/UI/emoji_1.png"},
+    "emoji_2": {"type": "image", "url": "Images/UI/emoji_2.png"},
+    "emoji_3": {"type": "image", "url": "Images/UI/emoji_3.png"},
+    "hand-bg": {"type": "image", "url": "Images/UI/hand-bg.png"},
+    "star-bg": {"type": "image", "url": "Images/UI/star-bg.png"},
+    "star": {"type": "image", "url": "Images/UI/star.png"},
+    "triangle": {"type": "image", "url": "Images/UI/triangle.png"},
+
+    "progress-bg": {"type": "image", "url": "Images/UI/progress-bg.png"},
+    "progress-line": {"type": "image", "url": "Images/UI/progress-line.png"},
+
+    "progress-bg-for-clothes": {"type": "image", "url": "Images/UI/pr_bar_bg.png"},
+    "progress-line-for-clothes": {"type": "image", "url": "Images/UI/pr_bar_1.png"},
+
+    "smail-bar-1": {"type": "image", "url": "Images/UI/bar_1.png"},
+    "smail-bar-2": {"type": "image", "url": "Images/UI/bar_2.png"},
+    "smail-bar-3": {"type": "image", "url": "Images/UI/bar_3.png"},
+
+    "button-next-level": {"type": "image", "url": "Images/UI/button-next-level.png"},
+    "button-try-again": {"type": "image", "url": "Images/UI/button-try-again.png"},
+
+    "cta-fail-top": {"type": "image", "url": "Images/UI/cta-fail-top.png"},
+    "cta-win-top": {"type": "image", "url": "Images/UI/cta-win-top.png"},
+
+    "text-reason-1": {"type": "image", "url": "Images/UI/text-reason-1.png"},
+    "text-reason-1V2": {"type": "image", "url": "Images/UI/text-reason(2).png"},
+    "text-reason-1V3": {"type": "image", "url": "Images/UI/text-reason(3).png"},
+    "text-reason-2": {"type": "image", "url": "Images/UI/text-reason-2.png"},
+    "text-reason-3": {"type": "image", "url": "Images/UI/text-reason-3.png"},
+    "text-reason-4": {"type": "image", "url": "Images/UI/text-reason-4.png"},
+
+    "confetti": {"type": "image", "url": "Images/UI/confetti.png"},
+
+    "fairy-top": {"type": "image", "url": "Images/UI/Fairy-Top.png"},
+    "fairy-shoes": {"type": "image", "url": "Images/UI/Fairy-Shoes.png"},
+    "fairy-hair": {"type": "image", "url": "Images/UI/Fairy-Hair.png"},
+
+    "kpop-top": {"type": "image", "url": "Images/UI/Kpop-Bottom.png"},
+    "kpop-shoes": {"type": "image", "url": "Images/UI/Kpop-Shoes.png"},
+    "kpop-hair": {"type": "image", "url": "Images/UI/Kpop-Hair.png"},
+    "crazyLook": {"type": "image", "url": "Images/crazyLook.png"},
+
+    "toilet-top": {"type": "image", "url": "Images/UI/Toilet-Top.png"},
+    "toilet-shoes": {"type": "image", "url": "Images/UI/Toilet-Shoes.png"},
+    "toilet-hair": {"type": "image", "url": "Images/UI/Toilet-Hair.png"},
+
+    //Texture
+    "step-1": {"type": "image", "url": "Images/Textures/step-2.png"},
+    "step-2": {"type": "image", "url": "Images/Textures/step-3.png"},
+    "step-3": {"type": "image", "url": "Images/Textures/step-4.png"},
+    "step-4": {"type": "image", "url": "Images/Textures/step-4.png"},
+
+    "top-banner": {"type": "image", "url": "Images/UI/top-banner.png"},
+    "eye-texture": {"type": "image", "url": "Images/Textures/eye.jpg"},
+
+    "shining-texture": {"type": "image", "url": "Images/Textures/shining.png"},
+    "star-texture": {"type": "image", "url": "Images/Textures/star_yellow.png"},
+
+    //Звуки
+    "sound-bg": {"type": "sound", "url": "Sounds/sound-bg.mp3", "volume": 0.3},
+    "sound-correct": {"type": "sound", "url": "Sounds/correct.mp3"},
+    "sound-error": {"type": "sound", "url": "Sounds/error.mp3"},
+    "sound-kick": {"type": "sound", "url": "Sounds/kick.mp3"},
+    "sound-select": {"type": "sound", "url": "Sounds/select.mp3"},
+    "sound-stars": {"type": "sound", "url": "Sounds/stars.mp3"},
+    "sound-fail": {"type": "sound", "url": "Sounds/fail.mp3","volume": 0.05},
+    "sound-orkestrom": {"type": "sound", "url": "Sounds/s-orkestrom.mp3"},
+    "sound-aplodismentov": {"type": "sound", "url": "Sounds/zvuk-aplodismentov-korotkiy-5-sek-33919.mp3"},
+
+    //Шрифты
+    "BebasNeue": {"type": "web-font", "url": "Fonts/BebasNeue.css"}
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "./schemas/image-compression-config.schema.json",
+  "_comment": "Конфигурационный файл для настройки компрессии изображений",
+  "_description": [
+    "Этот файл управляет параметрами сжатия изображений различных форматов.",
+    "Валидация: используется JSON Schema ./schemas/image-compression-config.schema.json",
+    "",
+    "Секция 'default' содержит настройки, применяемые ко всем изображениям:",
+    "- maxSize: максимальные размеры изображения (width/height: 1-16384 или null)",
+    "- quality.opaque: качество для непрозрачных изображений (1-100)",
+    "- quality.transparent: качество для прозрачных изображений (1-100)",
+    "- outputFormat.opaque: формат для непрозрачных (jpg, jpeg, webp, avif, none)",
+    "- outputFormat.transparent: формат для прозрачных (png, webp, avif, none)",
+    "",
+    "Секция 'custom' позволяет переопределить настройки для конкретных изображений:",
+    "- maxSize: индивидуальные размеры (переопределяет default.maxSize)",
+    "- quality: единое качество для всех типов (переопределяет обе настройки)",
+    "- outputFormat: единый формат вывода (переопределяет оба формата)",
+    "- 'none' означает сохранение исходного формата",
+    "",
+    "Имя изображения в секции 'custom' должно совпадать с именем файла без расширения.",
+    "Примеры: 'hero-banner', 'icon', 'T_Background' (без .png/.jpg/.webp и т.д.)"
+  ],
+  "default": {
+    "maxSize": {
+      "width": 1920,
+      "height": 1920,
+      "fit": "inside",
+      "withoutEnlargement": true
+    },
+    "quality": {
+      "opaque": 90,
+      "transparent": 90
+    },
+    "outputFormat": {
+      "opaque": "webp",
+      "transparent": "webp"
+    }
+  },
+  "custom": {}
+}
