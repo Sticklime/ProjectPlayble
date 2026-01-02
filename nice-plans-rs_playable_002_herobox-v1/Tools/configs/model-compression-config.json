@@ -1,0 +1,44 @@
+{
+  "$schema": "./schemas/model-compression-config.schema.json",
+  "_comment": "Конфигурационный файл для настройки компрессии 3D-моделей",
+  "_description": [
+    "Этот файл управляет параметрами сжатия GLB/GLTF файлов.",
+    "Секция 'default' содержит настройки, применяемые ко всем моделям.",
+    "Секция 'custom' позволяет переопределить настройки для конкретных моделей.",
+    "Имя модели в секции 'custom' должно совпадать с именем файла без расширения .glb"
+  ],
+  "default": {
+    "draco": {
+      "method": "edgebreaker",
+      "encodeSpeed": 0,
+      "decodeSpeed": 5,
+      "quantizePosition": 10,
+      "quantizeNormal": 8,
+      "quantizeTexcoord": 10,
+      "quantizeColor": 2,
+      "quantizeGeneric": 2,
+      "quantizationVolume": "mesh"
+    },
+    "textureCompress": {
+      "format": "avif",
+      "size": 256,
+      "quality": 90
+    },
+    "instance": {
+      "min": 2
+    },
+    "resample": {
+      "tolerance": 0.01
+    },
+    "simplify": {
+      "ratio": 0.99,
+      "error": 0.001
+    },
+    "flatten": true,
+    "dedup": true,
+    "weld": true,
+    "reorder": true,
+    "prune": true
+  },
+  "custom": {}
+}
