@@ -1,0 +1,14 @@
+# Blender files
+*.blend[0-9]
+
+# IDE
+/.idea/
+/.zed/
+/.vscode/
+/*.code-workspace
+*.sublime-workspace
+*.sublime-project
+
+# Node.js
+/node_modules/
+package-lock.json
