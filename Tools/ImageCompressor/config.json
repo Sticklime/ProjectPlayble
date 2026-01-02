@@ -1,0 +1,78 @@
+{
+  "$schema": "./config.schema.json",
+  "_comment": "Image compression configuration file",
+  "_description": [
+    "This file controls compression parameters for various image formats.",
+    "Validation: uses JSON Schema ./config.schema.json",
+    "",
+    "The 'default' section contains settings applied to all images:",
+    "- maxSize: maximum image dimensions (width/height: 1-16384 or null)",
+    "- quality.opaque: quality for opaque images (1-100)",
+    "- quality.transparent: quality for transparent images (1-100)",
+    "- outputFormat.opaque: format for opaque images (jpg, jpeg, webp, none)",
+    "- outputFormat.transparent: format for transparent images (png, webp, none)",
+    "- formatOptions: advanced per-format settings (webp, jpeg, png)",
+    "",
+    "Format-specific options:",
+    "- webp: quality, lossless, nearLossless, smartSubsample, effort, alphaQuality, minSize, mixed",
+    "- jpeg: quality, mozjpeg, progressive, optimizeCoding, trellisQuantisation, overshootDeringing, chromaSubsampling",
+    "- png: compressionLevel, progressive, palette, quality, effort, colors, dither",
+    "",
+    "The 'custom' section allows overriding settings for specific images:",
+    "- maxSize: individual dimensions (overrides default.maxSize)",
+    "- quality: unified quality for all types (overrides both settings)",
+    "- outputFormat: unified output format (overrides both formats)",
+    "- formatOptions: per-format advanced settings (overrides default formatOptions)",
+    "- 'none' means preserve original format",
+    "",
+    "Image name in 'custom' section must match filename without extension.",
+    "Examples: 'hero-banner', 'icon', 'T_Background' (without .png/.jpg/.webp etc.)"
+  ],
+  "default": {
+    "maxSize": {
+      "width": 1024,
+      "height": 1024,
+      "fit": "inside",
+      "withoutEnlargement": true
+    },
+    "quality": {
+      "opaque": 82,
+      "transparent": 85
+    },
+    "outputFormat": {
+      "opaque": "jpg",
+      "transparent": "png"
+    },
+    "formatOptions": {
+      "webp": {
+        "quality": 82,
+        "lossless": false,
+        "nearLossless": false,
+        "smartSubsample": true,
+        "effort": 5,
+        "alphaQuality": 90,
+        "minSize": true,
+        "mixed": false
+      },
+      "jpeg": {
+        "quality": 82,
+        "mozjpeg": true,
+        "progressive": true,
+        "optimizeCoding": true,
+        "trellisQuantisation": true,
+        "overshootDeringing": true,
+        "chromaSubsampling": "4:2:0"
+      },
+      "png": {
+        "compressionLevel": 9,
+        "progressive": false,
+        "palette": false,
+        "quality": 90,
+        "effort": 10,
+        "colors": 256,
+        "dither": 1.0
+      }
+    }
+  },
+  "custom": {}
+}

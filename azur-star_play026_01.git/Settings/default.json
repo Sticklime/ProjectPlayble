@@ -1,0 +1,582 @@
+/*
+Это файл конфигурации проекта. Таких файлов может быть несколько. Например, если нужно создать несколько похожих проектов,
+отличающихся картинками, звуками или незначительным поведением. Если же не нужно создавать несколько похожих проектов,
+то второй файл нужно удалить. После создания release сборки, для каждого файла настроек будет создана своя версия проекта.
+*/
+
+{
+  /*
+	Название (title) и кодовое имя версии проекта (name). Оба этих поля нужно заменить на соответствующие новому проекту.
+	Кодовое имя проекта используется для именования папок (и как имя версии в Dashboard). Должно быть разным в каждом файле настроек
+	(если их несколько в проекте). Должно содержать текст описывающий особенности этой версии настроек (если файлов настроек несколько)
+	или текст default (если файл настроек один).
+
+	Например 'track-builder' а не 'lego-track-builder'.
+	*/
+  "title": "Game Name",
+  "name": "default",
+
+  //Здесь можно включить собственную отладочную консоль поверх игры
+  "debug": { "value": false, "type": "boolean" },
+  "debug-logger": { "value": "custom", "type": "select" },
+
+  //Этот файл будет подключаться через MraidSDK в генерируемый дашбордом стартовый html файл (index.html файл созданный в этом проекте использоваться дашбордом не будет)
+  "game-code-url": "dist/main.js",
+
+  //Сюда записываем адреса в магазинах приложений для рекламируемого приложения
+  "target-url": {
+    "ios": "",
+    "android": "",
+    "amazon": "",
+    "default": "",
+    "value": "https://google.com",
+    "type": "string"
+  },
+
+  //Пример кастомной настройки. Её нужно убрать перед загрузкой игры в дашборд.
+  //"example-custom-setting": {"value": 0.5, "type": "number", "section": "main", "control": "range", "min": 0.1, "max": 1, "step": 0.1, "title": "Example setting", "description": "Scale of gameplay text", "autoApplyChanges": true},
+
+  /*
+	Здесь место для новых настроек. Созданных специально для конкретного проекта.
+	Нужно обязательно указывать поля "value", "type", "title", "description", "section": "main", "control": "input|switch|radio|select|range|number|color"
+
+	Пример:
+	"setting-1": {"value": "my value", "type": "string", "section": "main", "control": "input", "title": "Revenge button animation", "description": "Choose one of two revenge button animation styles.", "autoApplyChanges": true},
+	"setting-2": {"value": "#004466", "type": "string", "section": "main", "control": "color", "title": "Revenge button animation", "description": "Choose one of two revenge button animation styles.", "autoApplyChanges": true},
+	"setting-3": {"value": 1, "type": "select", "section": "main", "control": "radio", "values": [1, 2], optionDescriptions: {"1": "Description 1", "2": "Description 2"}, "title": "Revenge button animation", "description": "Choose one of two revenge button animation styles: 1 - pulsation, 2 - chaotic motion.", "autoApplyChanges": true},
+	"setting-4": {"value": 2, "type": "select", "section": "main", "control": "select", "values": [1, 2], optionDescriptions: {"1": "Description 1", "2": "Description 2"}, "title": "Revenge button animation", "description": "Choose one of two revenge button animation styles: 1 - pulsation, 2 - chaotic motion.", "autoApplyChanges": true},
+	"setting-5": {"value": 0.2, "type": "number", "section": "main", "control": "range", "min": 0.1, "max": 5, "step": 0.1, "title": "Revenge button animation", "description": "Choose one of two revenge button animation styles.", "autoApplyChanges": true},
+
+	Больше примеров и вариантов контролов можно посмотреть в БД в таблице metadata_project_version_settings и project_version_settings_original
+
+	Для того чтобы в нашем Dashboard можно было изменять эти настройки без перезагрузки фрейма с проектом рекламы, нужно прописать ключ: "autoApplyChanges": true.
+	В этом случае Dashboard будет знать что перезагружать фрейм не нужно. Вместо этого он отправить значение этой настройки прямо в код запущенного проекта через window.sendMessage.
+	Перехватить эту информацию в коде игры можно через событие "Setting Changed" в которое передастся имя настроки и новое значение. При этом в объекте Settings оно уже будет изменено.
+	*/
+
+  /*
+	Настройки вида и расположения фонового изображения, логотипа, прогресса загрузки и логотипа издателя на экране загрузки.
+	Чтобы красиво расположить все эти элементы на экране нужно менять свойства left:portrait, right:portrait, left:landscape,
+	right:landscape и т.д. для логотипа (loading-icon-styles) и прогресса загрузки (loading-progress-styles), а для логотипа
+	издателя нужно менять width и height. Всё это в процентах на подходящие для текущего проекта значения. Так же нужно обратить
+	внимание на тень. В некоторых случаях она нужна (если логотип сливается с фоном), а в некоторых тень лишняя, если и так
+	логотипы хорошо видны.
+	*/
+  //TODO: настройки экрана загрузки нужно убрать после рефакторинга и переноса всех экранов загрузки в дашборд
+  "loading-overlay-styles": { "type": "css", "value": {} },
+  "loading-overlay-show-time": { "type": "number", "value": 200 },
+  "loading-overlay-hide-time": { "type": "number", "value": 1000 },
+  "loading-background-styles": {
+    "type": "css",
+    "value": {
+      "background": "radial-gradient(#837c24, #000000)",
+      "filter": "blur(5px)",
+      "transform": "scale(1.05)"
+    }
+  },
+  "loading-icon-styles": {
+    "type": "css",
+    "value": {
+      "background": "url($logotype$) no-repeat scroll center center / contain",
+      "left:portrait": "15%",
+      "right:portrait": "15%",
+      "top:portrait": "25%",
+      "bottom:portrait": "35%",
+      "left:landscape": "28%",
+      "right:landscape": "28%",
+      "top:landscape": "15%",
+      "bottom:landscape": "25%",
+      "filter": "drop-shadow(0px 0px 5px #00000022)"
+    }
+  },
+  "loading-icon-publisher-styles": {
+    "type": "css",
+    "value": {
+      "background": "",
+      "width": "35%",
+      "height": "9%",
+      "filter": "drop-shadow(0px 0px 5px #000000)"
+    },
+    "hideInPortfolio": true
+  },
+  "loading-progress-styles": {
+    "type": "css",
+    "value": {
+      "background": "rgba(255, 255, 255, 0.2)",
+      "left:portrait": "34%",
+      "right:portrait": "34%",
+      "top:portrait": "85%",
+      "bottom:portrait": "5%",
+      "left:landscape": "40%",
+      "right:landscape": "40%",
+      "top:landscape": "85%",
+      "bottom:landscape": "10%",
+      "filter": "drop-shadow(0px 0px 3px #00000022)"
+    }
+  },
+  "loading-progress-fill-styles": {
+    "type": "css",
+    "value": { "background": "rgba(255, 255, 255, 0.8)" }
+  },
+  "loading-code-progress-percent": 0.5,
+  "loading-click-out": { "type": "boolean", "value": true },
+  "loading-text": { "type": "string", "value": "" },
+  "loading-text-styles": {
+    "type": "css",
+    "value": {
+      "color": "#ffffff",
+      "fontFamily": "Arial",
+      "fontWeight": "bold",
+      "fontSize:portrait": "16px",
+      "fontSize:landscape": "16px",
+      "textAlign": "center",
+      "left:portrait": "15%",
+      "right:portrait": "15%",
+      "top:portrait": "60%",
+      "bottom:portrait": "20%",
+      "left:landscape": "35%",
+      "right:landscape": "35%",
+      "top:landscape": "70%",
+      "bottom:landscape": "15%"
+    }
+  },
+  "loading-disable-in-base64": { "type": "boolean", "value": true },
+
+  //Показывать сразу конечный экран
+  "cta-only": { "type": "boolean", "value": false },
+
+  "directional-light-pos-x": {
+    "value": 10.55,
+    "type": "number",
+    "section": "main",
+    "control": "range",
+    "min": -400,
+    "max": 400,
+    "step": 0.01,
+    "title": "Directional light position X",
+    "autoApplyChanges": true
+  },
+  "directional-light-pos-y": {
+    "value": 62.47,
+    "type": "number",
+    "section": "main",
+    "control": "range",
+    "min": -400,
+    "max": 400,
+    "step": 0.01,
+    "title": "Directional light position Y",
+    "autoApplyChanges": true
+  },
+  "directional-light-pos-z": {
+    "value": 107.91,
+    "type": "number",
+    "section": "main",
+    "control": "range",
+    "min": -400,
+    "max": 400,
+    "step": 0.01,
+    "title": "Directional light position Z",
+    "autoApplyChanges": true
+  },
+  "ambient-light-pos-x": {
+    "value": -400,
+    "type": "number",
+    "section": "main",
+    "control": "range",
+    "min": -400,
+    "max": 400,
+    "step": 0.01,
+    "title": "ambient light position X",
+    "autoApplyChanges": true
+  },
+  "ambient-light-pos-y": {
+    "value": -400,
+    "type": "number",
+    "section": "main",
+    "control": "range",
+    "min": -400,
+    "max": 400,
+    "step": 0.01,
+    "title": "ambient light position Y",
+    "autoApplyChanges": true
+  },
+  "ambient-light-pos-z": {
+    "value": -400,
+    "type": "number",
+    "section": "main",
+    "control": "range",
+    "min": -400,
+    "max": 400,
+    "step": 0.01,
+    "title": "ambient light position Z",
+    "autoApplyChanges": true
+  },
+  "directional-light-intensity": {
+    "value": 5.29,
+    "type": "number",
+    "section": "main",
+    "control": "range",
+    "min": 0,
+    "max": 30,
+    "step": 0.01,
+    "title": "directional-light-intensity",
+    "autoApplyChanges": true
+  },
+  "ambient-light-intensity": {
+    "value": 2.13,
+    "type": "number",
+    "section": "main",
+    "control": "range",
+    "min": 0,
+    "max": 30,
+    "step": 0.01,
+    "title": "ambient-light-intensity",
+    "autoApplyChanges": true
+  },
+  "ambient-light-color": {
+    "value": "#FFE5F3",
+    "type": "string",
+    "section": "main",
+    "control": "color",
+    "title": "Ambient light color",
+    "autoApplyChanges": true
+  },
+
+  //Эта настройка отключает обучение в игре (руку или стрелку указывающую что делать)
+  //"tutorial": {"type": "boolean", "value": true},
+  //Эта настройка должна настраивать время бездействия игрока до появления туториала
+  //"tutorial-timeout": {"type": "number", "value": 500},
+
+  //Здесь можно установить локаль чтобы протестировать разные локализации
+  //"locale": {"type": "select", "value": "auto"},
+
+  //Сюда нужно вписать все специально созданные события для этого проекта
+  "track-events": {
+    "type": "info",
+    "value": [
+      //{"name": "My Tracking Event", "description": "Called when user choose character"},
+    ]
+  },
+
+  //Использовать в дашборде отдельные картинки вместо атласов для ускорения процессов замены и изменения картинок внутри атласов
+  //Если в проекте используется Spine - эту настройку нужно поставить в false
+  //В БД для стрых проектов она по-умолчанию стоит false
+  "separated-images-in-dashboard-preview": { "type": "boolean", "value": true },
+
+  /*
+	Ниже нужно поместить все текстовые сообщения используемые в проекте.
+	Напрямую писать их в Container секции скринов запрещено ради поддержания
+	возможности настраивать локализацию в Dashboard
+
+	Для дефолтных элементов End Card и Banner скринов нужно удалять в свойствах выше заменяемые css свойства
+
+	---------------------------------------------------------------------
+	Для сообщений обязательно следует указывать их тип (pixi, three, dom)
+	---------------------------------------------------------------------
+	*/
+
+  "Localization": {
+    "en": {
+      "GAME TEXT": {
+        "type": "three",
+        "text": "Do you know well?"
+      },
+      "GAME_TEXT": {
+        "type": "three-text",
+        "text": "Game Text",
+        "fontFamily": "OpenSans",
+        "fontSize": 65,
+        "fill": "#000000"
+      }
+    }
+  },
+
+  /*
+	Здесь прописываются все необходимые для работы проекта ресурсы (текстуры, звуки, шрифты, json данные и другое).
+
+	Все используемые изображения нужно распределить в одну или, обычно, несколько текстур TexturePacker,
+	в зависимости от типа файла, даже если будет одна картинка в текстуре (это нужно для сжатия).
+
+	Используется три вида текстур: png32, png8 и jpg.
+	В png32 текстуру нужно добавлять изображения содержащие прозрачность и полупрозрачность.
+	В png8 текстуру нужно добавлять изображения содержащие прозрачность но без полупрозрачности.
+	В jpg текстуру нужно добавлять изображения без прозрачности. Обычно это фоновые прямоугольные картинки.
+
+	В каждую из этих текстур можно класть любой формат файлов: png32, png8, jpg, gif и другие. Но на выходе
+	всё это сконвертируется в формат текстуры.
+
+	Размер одной текстуры не должен быть более 2048x2048. Если все изображения не влазят можно
+	использовать scale в настройках TexturePacker или несколько текстур. Но нужно помнить, что
+	в сумме с кодом игры всё это вместе должно занимать не более 5Мб места.
+
+	Пример загрузки текстур:
+	"texture": {"type": "atlas", "url": "Textures/Texture.json"}, //png32
+	"texture-characters": {"type": "atlas", "url": "Textures/TextureCharacters.json"}, //png8
+	"texture-backgrounds": {"type": "atlas", "url": "Textures/TextureBackgrounds.json"}, //jpg
+
+	Пример загрузки изображения не находящегося в текстуре (делать так не нужно, кроме текстур для three.js и изображений для экрана загрузки):
+	"background.jpg": {"type": "image", "url": "Images/background.jpg"},
+
+	Пример загрузки текстуры для three.js:
+	"background.jpg": {"type": "image", "url": "Images/background.jpg", "threeLoader": true},
+
+	Загрузка шрифтов осуществляется через css файлы.
+	Если необходимый шрифт есть в Google Fonts - то нужно использовать ссылку на Google Fonts
+	ВАЖНО!!! Имя ассета и имя в ссылке на шрифт должны совпадать
+
+	Пример:
+	"Cinzel": {"type": "web-font", "url": "https://fonts.googleapis.com/css?family=Cinzel:400,700"},
+
+	Если нет нужного шрифта на Google Fonts, то нужно загружать локально.
+
+	Пример:
+	"GothamRounded-Bold": {"type": "web-font", "url": "Fonts/GothamRounded-Bold.css"},
+
+	При этом в Google сборке такие шрифты (загруженные локально, без fonts.googleapis.com) будут запрещены, и нужно в коде проекта использовать
+	fallback записи для шрифта.
+
+	Пример:
+	styles: {fontFamily: 'GothamRounded-Bold', fontFamilyAdwords: 'Arial', fontSize: '40px', fontSizeAdwords: '45px'}
+
+	Все используемые видеоролики в проекте нужно предзагрузить полностью либо частично.
+	При частичной загрузке будет загружено лишь начало, а остальное будет догружаться по мере просмотра.
+
+	Пример полной предзагрузки:
+	"main video": {"type": "video", "url": "Video/main-video.mp4"},
+
+	Пример частичной загрузки:
+	"video-cta": {"type": "video", "url": "Video/cta.mp4", "loadTillCanPlay": true}
+
+	Пример отложенной загрузки (для случаев когда видео нужно только в конце):
+	"video-cta": {"type": "video", "url": "Video/cta.mp4", "loadTillCanPlay": "delayed"}
+
+	Пример видео для rovio (нужно использовать декодер jsmpeg, в папке Video/ должно быть видео с расширением .ts, делается через дашборд)
+	"video-cta": {"type": "video", "url": "Video/cta.mp4", "jsmpeg": true}
+
+	Можно остановить полную предзагрузку jsmpeg видео через "throttled": true
+	В этом случае загрузится только полмегабайта первые и дальше скрипт будет ждать начала воспроизведения чтобы загрузить остальное
+	"video-cta": {"type": "video", "url": "Video/cta.mp4", "jsmpeg": true, "throttled": true}
+
+	Можно указать конкретный процент предзагрузки jsmpeg video:
+	"video-cta": {"type": "video", "url": "Video/cta.mp4", "jsmpeg": true, "jsmpeg-preload": 0.8}
+	В этом случае 0.8 - это 80%. Погрешность зависит от chunkSize (по умолчанию 0.5мб)
+
+	Если видео выбирается из списка нескольких то нужно прописать все видеофайлы таким образом:
+	"video-cta-1": {"type": "video", "url": "Video/1.mp4", "jsmpeg": true, "loadStrategy": "none"}
+	"video-cta-2": {"type": "video", "url": "Video/2.mp4", "jsmpeg": true, "loadStrategy": "none"}
+	В этом случае эти видеофайлы пройдут всю нужную обработку и сжатие в дашборде и будут добавлены в релиз, но загружаться автоматически не будут.
+	Отдельно от этого списка нужно прописать основной файл для загрузки как обычно
+	"video-cta": {"type": "video", "url": "Video/CTE_LGML014_020_GREAT_ADVENTURE_UK_T1-repack.mp4", "jsmpeg": true}
+	Его url можно менять в методе App.js -> prepare
+
+	Для текстур можно указать дополнительные настройки сжатия, если например Facebook версия не получается нужного размера.
+	Сжатие можно настраивать для каждой текстуры и для каждого качества отдельно.
+
+	Пример настройки сжатия текстуры:
+	"texture": {"type": "atlas", "url": "Textures/Texture.json", "compress": {"medium": {"tinypng": false, "scale": 0.9}, "low": {"tinypng": true, "scale": 0.9}}},
+
+	Пример настройки сжатия картинки:
+	"texture": {"type": "image", "url": "Images/background.jpg", "compress": {"medium": false, "low": true}},
+
+	Можно добавить другие файлы и папки для копирования (они будут скопированы в mraid и подобные релизы где используется copySettingsAssets)
+
+	Пример:
+	"loading-screen-image": {"type": "custom", "url": "Images/loading-image.png"}
+
+	Можно загружать один из списка ассетов на выбор. Выбор может быть либо случайным, либо привязанным к настройке,
+	либо привязанным к другому случайному ассету.
+
+	Пример случайного ассета:
+	"background-image": {"type": "image", "url": "Images/Backgrounds/background-?.jpg", "values": ["1", "2", "3"]},
+	В этом случае будет выбрана картинка Images/Backgrounds/background-1.jpg, Images/Backgrounds/background-2.jpg или Images/Backgrounds/background-3.jpg
+
+	Пример привязанного к настройке ассета:
+	Настройка: 	"background": {"default": "#random", "type": "select", "values": ["1", "2", "3"], "title": "Background", "description": "Choose one from predefined background images", "option-descriptions": {"1": "Birches", "2": "Autumn", "3": "Maldives"}, "section": "main", "control": "radio", "autoApplyChanges": true},
+	Ассет: "background-image": {"type": "image", "url": "Images/Backgrounds/background-?.jpg", "valueFrom": "background"},
+
+	Пример привязанного к другому случайному ассету:
+	"background-image": {"type": "image", "url": "Images/Backgrounds/background-?.jpg", "values": ["1", "2", "3"]},
+	"loading-screen-image": {"type": "custom", "url": "Images/Backgrounds/background-?-loading.jpg", "valueFrom": "background-image"},
+
+	Можно отменять загрузку ассетов из-за настройки (старый способ):
+	"texture-fish-1": {"type": "atlas", "url": "Textures/TextureFish1.json", "load-if": {"setting": ["fishes", "1"]}},
+	В этом случае текстура будет загружена если настройка fishes равна "1" (или содержит "1" при типе "multi-select")
+
+	Можно отменять загрузку ассетов из-за настройки (новый способ, работает только в РЕЛИЗАХ):
+  "texture-fish-1": {"type": "atlas", "url": "Textures/TextureFish1.json", "condition": {"setting": {"fishes": "1"}}},
+  В этом случае текстура будет загружена если настройка fishes равна "1" (или содержит "1" при типе "multi-select").
+  Кроме того, можно использовать расширенные методы по отсеву ассетов из-за настроек - "settings-and" и "settings-or":
+  "texture-fish-1": {"type": "atlas", "url": "Textures/TextureFish1.json", "condition": {"settings-and": {"hero-message-1": true, "hero-message-2", true, "hero-message-3", true}}},
+  В этом случае текстура будет загружена, если все пересичленные настроки будут равны true (или другому параметру, который указан в condition.
+  "texture-fish-1": {"type": "atlas", "url": "Textures/TextureFish1.json", "condition": {"settings-or": {"hero-message-1": true, "hero-message-2", true, "hero-message-3", true}}},
+  В этом случае ассет загрузится, если одна из настроек будет true (или равна другому указанному параметру).
+
+	Создать несколько взаимозаменяемых ассетов в зависимости от локали и времени можно так:
+  "video-cta|1": {"type": "video", "url": "Video/video1_en.mp4", "condition": {"locale": "en", "time": "2020-00-00T00:00:00.000Z"}},
+	"video-cta|2": {"type": "video", "url": "Video/video1_sv.mp4", "condition": {"locale": "sv", "time": "2020-00-00T00:00:00.000Z"}},
+	"video-cta|3": {"type": "video", "url": "Video/video2_en.mp4", "condition": {"locale": "en", "time": "2020-02-03T00:00:00.000Z"}},
+	"video-cta|4": {"type": "video", "url": "Video/video2_sv.mp4", "condition": {"locale": "sv", "time": "2020-02-03T00:00:00.000Z"}}
+	В результате получится ассет:
+	"video-cta": {"type": "video", "url": "Video/video2_en.mp4", "width": 600, "height": 480, "condition": {"locale": "en", "time": "2020-02-03T00:00:00.000Z"}},
+	Если текущая локаль en (или любая другая кроме sv) и время 2020-02-03T00:00:00.000Z уже наступило.
+
+	Иногда видео смещено по непонятной причине (возможно в метаданных написаны неверные размеры или не стандартное соотношение)
+	в этом случае можно указать их в объекте ассета и позиция установится правильно:
+	"video-cta": {"type": "video", "url": "Video/video.mp4", "width": 600, "height": 480},
+
+	"jsmpeg" видео после сжатия может иметь другие размеры - указать дополнительный скейл для jsmpeg видео можно так:
+	"video-cta": {"type": "video", "url": "Video/video.mp4", "jsmpegScale": 3}
+	точно также можно указать скейл для не jsmpeg варианта:
+	"video-cta": {"type": "video", "url": "Video/video.mp4", "scale": 0.7}
+	учитывайте что маркер jsmpeg в релизе может проставиться автоматически (например в релизе Rovio Classic)
+
+	*/
+
+  "Assets": {
+    "banner-icon": {
+      "type": "image",
+      "url": "Images/banner-icon.png"
+    },
+    "banner-star": {
+      "type": "image",
+      "url": "Images/banner-star.png"
+    },
+    "close-button": {
+      "type": "image",
+      "url": "Images/close-button.png"
+    },
+    "icon": {
+      "type": "image",
+      "url": "Images/icon.png"
+    },
+    "logotype": {
+      "type": "image",
+      "url": "Images/logotype.png"
+    },
+    "I_1": {
+      "type": "image",
+      "url": "Images/UI/I_1.png"
+    },
+    "I_2": {
+      "type": "image",
+      "url": "Images/UI/I_2.png"
+    },
+    "I_3": {
+      "type": "image",
+      "url": "Images/UI/I_3.png"
+    },
+    "I_Button": {
+      "type": "image",
+      "url": "Images/UI/I_Button.png"
+    },
+    "I_Button_Download": {
+      "type": "image",
+      "url": "Images/UI/I_Button_Download.png"
+    },
+    "I_Button_Replay": {
+      "type": "image",
+      "url": "Images/UI/I_Button_Replay.png"
+    },
+    "I_Control": {
+      "type": "image",
+      "url": "Images/UI/I_Control.png"
+    },
+    "I_Filter": {
+      "type": "image",
+      "url": "Images/UI/I_Filter.png"
+    },
+    "I_Glow_6": {
+      "type": "image",
+      "url": "Images/UI/I_Glow_6.png"
+    },
+    "I_GO": {
+      "type": "image",
+      "url": "Images/UI/I_GO.png"
+    },
+    "I_GOAL": {
+      "type": "image",
+      "url": "Images/UI/I_GOAL.png"
+    },
+    "I_Goal_Football_Complete": {
+      "type": "image",
+      "url": "Images/UI/I_Goal_Football_Complete.png"
+    },
+    "I_Hand": {
+      "type": "image",
+      "url": "Images/UI/I_Hand.png"
+    },
+    "I_Jump": {
+      "type": "image",
+      "url": "Images/UI/I_Jump.png"
+    },
+    "I_Lose_End": {
+      "type": "image",
+      "url": "Images/UI/I_Lose_End.png"
+    },
+    "I_PopUp": {
+      "type": "image",
+      "url": "Images/UI/I_PopUp.png"
+    },
+    "I_Progress_Level_1": {
+      "type": "image",
+      "url": "Images/UI/I_Progress_Level_1.png"
+    },
+    "I_Progress_Win": {
+      "type": "image",
+      "url": "Images/UI/I_Progress_Win.png"
+    },
+    "I_Score": {
+      "type": "image",
+      "url": "Images/UI/I_Score.png"
+    },
+    "I_Score_5_Goals_Against_Your_Opponent": {
+      "type": "image",
+      "url": "Images/UI/I_Score_5_Goals_Against_Your_Opponent.png"
+    },
+    "I_Swipe_To_Move": {
+      "type": "image",
+      "url": "Images/UI/I_Swipe_To_Move.png"
+    },
+    "I_Tap_To_Jump": {
+      "type": "image",
+      "url": "Images/UI/I_Tap_To_Jump.png"
+    },
+    "I_Timer": {
+      "type": "image",
+      "url": "Images/UI/I_Timer.png"
+    },
+    "I_Win_End": {
+      "type": "image",
+      "url": "Images/UI/I_Win_End.png"
+    },
+    "Bg": {
+      "type": "image",
+      "url": "Images/bg.jpg",
+      "threeLoader": true
+    },
+    "scene": {
+      "type": "glb",
+      "url": "Data/scene.glb"
+    },
+    "character": {
+      "type": "glb",
+      "url": "Data/Character.glb"
+    },
+    "S_Click": {
+      "type": "sound",
+      "url": "Sounds/S_Click.mp3"
+    },
+    "game-lost": {
+      "type": "sound",
+      "url": "Sounds/game-lost.mp3"
+    },
+    "OpenSans": {
+      "type": "web-font",
+      "url": "Fonts/OpenSans.css"
+    },
+    "BalooCyrillic": {
+      "type": "web-font",
+      "url": "Fonts/BalooCyrillic.css"
+    }
+  }
+}
