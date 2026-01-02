@@ -1,0 +1,36 @@
+{
+  "default": {
+    "draco": {
+      "method": "edgebreaker",
+      "encodeSpeed": 0,
+      "decodeSpeed": 5,
+      "quantizePosition": 10,
+      "quantizeNormal": 8,
+      "quantizeTexcoord": 10,
+      "quantizeColor": 8,
+      "quantizeGeneric": 2,
+      "quantizationVolume": "mesh"
+    },
+    "textureCompress": {
+      "format": "avif",
+      "size": 256,
+      "quality": 75
+    },
+    "instance": {
+      "min": 2
+    },
+    "resample": {
+      "tolerance": 0.001
+    },
+    "simplify": {
+      "ratio": 0.9,
+      "error": 0.001
+    },
+    "flatten": true,
+    "dedup": true,
+    "weld": true,
+    "reorder": true,
+    "prune": true
+  },
+  "custom": {}
+}

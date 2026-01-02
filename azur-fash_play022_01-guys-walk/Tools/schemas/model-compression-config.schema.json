@@ -1,0 +1,221 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "model-compression-config.schema.json",
+  "title": "Схема конфигурации сжатия моделей",
+  "description": "Схема для настройки параметров сжатия 3D-моделей для GLB/GLTF файлов",
+  "type": "object",
+  "properties": {
+    "_comment": {
+      "type": "string",
+      "description": "Необязательный комментарий, описывающий назначение этого конфигурационного файла"
+    },
+    "_description": {
+      "type": "array",
+      "description": "Необязательный массив строк с подробным описанием конфигурации",
+      "items": {
+        "type": "string"
+      }
+    },
+    "default": {
+      "type": "object",
+      "description": "Настройки сжатия по умолчанию, применяемые ко всем моделям",
+      "properties": {
+        "draco": {
+          "type": "object",
+          "description": "Настройки сжатия Draco для геометрических данных",
+          "properties": {
+            "method": {
+              "type": "string",
+              "enum": ["edgebreaker", "sequential"],
+              "description": "Метод сжатия для использования"
+            },
+            "encodeSpeed": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "Скорость кодирования (0 = самая медленная/лучшее сжатие, 10 = самая быстрая)"
+            },
+            "decodeSpeed": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "Уровень оптимизации скорости декодирования"
+            },
+            "quantizePosition": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 30,
+              "description": "Биты квантования для атрибутов позиции"
+            },
+            "quantizeNormal": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 30,
+              "description": "Биты квантования для атрибутов нормалей"
+            },
+            "quantizeTexcoord": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 30,
+              "description": "Биты квантования для текстурных координат"
+            },
+            "quantizeColor": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 30,
+              "description": "Биты квантования для атрибутов цвета"
+            },
+            "quantizeGeneric": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 30,
+              "description": "Биты квантования для общих атрибутов"
+            },
+            "quantizationVolume": {
+              "type": "string",
+              "enum": ["mesh", "scene"],
+              "description": "Объём для использования при квантовании"
+            }
+          },
+          "required": ["method"],
+          "additionalProperties": false
+        },
+        "textureCompress": {
+          "type": "object",
+          "description": "Настройки сжатия текстур",
+          "properties": {
+            "format": {
+              "type": "string",
+              "enum": ["jpeg", "png", "webp", "avif", "auto"],
+              "description": "Выходной формат для сжатых текстур"
+            },
+            "size": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4096,
+              "description": "Максимальный размер текстуры в пикселях"
+            },
+            "quality": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "description": "Качество сжатия (1-100, выше = лучше качество)"
+            }
+          },
+          "additionalProperties": false
+        },
+        "instance": {
+          "type": "object",
+          "description": "Настройки оптимизации экземпляров",
+          "properties": {
+            "min": {
+              "type": "integer",
+              "minimum": 2,
+              "description": "Минимальное количество экземпляров, необходимое для оптимизации"
+            }
+          },
+          "additionalProperties": false
+        },
+        "resample": {
+          "type": "object",
+          "description": "Настройки передискретизации анимации",
+          "properties": {
+            "tolerance": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Допуск для уменьшения ключевых кадров анимации"
+            }
+          },
+          "additionalProperties": false
+        },
+        "simplify": {
+          "type": "object",
+          "description": "Настройки упрощения сетки",
+          "properties": {
+            "ratio": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Целевое соотношение вершин для сохранения (0.75 = сохранить 75%)"
+            },
+            "error": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Максимальный допуск ошибки для упрощения"
+            }
+          },
+          "additionalProperties": false
+        },
+        "flatten": {
+          "type": "boolean",
+          "description": "Выравнивать иерархию узлов где возможно"
+        },
+        "dedup": {
+          "type": "boolean",
+          "description": "Удалять дублирующиеся вершины и сетки"
+        },
+        "weld": {
+          "type": "boolean",
+          "description": "Объединять близлежащие вершины"
+        },
+        "reorder": {
+          "type": "boolean",
+          "description": "Переупорядочивать вершины для лучшего использования кэша GPU"
+        },
+        "prune": {
+          "type": "boolean",
+          "description": "Удалять неиспользуемые узлы, материалы и другие ресурсы"
+        }
+      },
+      "additionalProperties": false
+    },
+    "custom": {
+      "type": "object",
+      "description": "Пользовательские настройки сжатия для конкретных моделей (ключ = имя файла модели без расширения)",
+      "patternProperties": {
+        "^[^/\\\\]+$": {
+          "type": "object",
+          "description": "Настройки сжатия для конкретной модели (переопределяют настройки по умолчанию)",
+          "properties": {
+            "draco": {
+              "$ref": "#/properties/default/properties/draco"
+            },
+            "textureCompress": {
+              "$ref": "#/properties/default/properties/textureCompress"
+            },
+            "instance": {
+              "$ref": "#/properties/default/properties/instance"
+            },
+            "resample": {
+              "$ref": "#/properties/default/properties/resample"
+            },
+            "simplify": {
+              "$ref": "#/properties/default/properties/simplify"
+            },
+            "flatten": {
+              "$ref": "#/properties/default/properties/flatten"
+            },
+            "dedup": {
+              "$ref": "#/properties/default/properties/dedup"
+            },
+            "weld": {
+              "$ref": "#/properties/default/properties/weld"
+            },
+            "reorder": {
+              "$ref": "#/properties/default/properties/reorder"
+            },
+            "prune": {
+              "$ref": "#/properties/default/properties/prune"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["default"],
+  "additionalProperties": false
+}
