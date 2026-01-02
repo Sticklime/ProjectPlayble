@@ -1,0 +1,225 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "model-compression-config.schema.json",
+  "title": "Model Compression Configuration Schema",
+  "description": "Schema for configuring 3D model compression parameters for GLB/GLTF files",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON schema reference for validation"
+    },
+    "_comment": {
+      "type": "string",
+      "description": "Optional comment describing the purpose of this configuration file"
+    },
+    "_description": {
+      "type": "array",
+      "description": "Optional array of strings with detailed configuration description",
+      "items": {
+        "type": "string"
+      }
+    },
+    "default": {
+      "type": "object",
+      "description": "Default compression settings applied to all models",
+      "properties": {
+        "draco": {
+          "type": "object",
+          "description": "Draco compression settings for geometric data",
+          "properties": {
+            "method": {
+              "type": "string",
+              "enum": ["edgebreaker", "sequential"],
+              "description": "Compression method to use"
+            },
+            "encodeSpeed": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "Encoding speed (0 = slowest/best compression, 10 = fastest)"
+            },
+            "decodeSpeed": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10,
+              "description": "Decoding speed optimization level"
+            },
+            "quantizePosition": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 30,
+              "description": "Quantization bits for position attributes"
+            },
+            "quantizeNormal": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 30,
+              "description": "Quantization bits for normal attributes"
+            },
+            "quantizeTexcoord": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 30,
+              "description": "Quantization bits for texture coordinates"
+            },
+            "quantizeColor": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 30,
+              "description": "Quantization bits for color attributes"
+            },
+            "quantizeGeneric": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 30,
+              "description": "Quantization bits for generic attributes"
+            },
+            "quantizationVolume": {
+              "type": "string",
+              "enum": ["mesh", "scene"],
+              "description": "Volume to use for quantization"
+            }
+          },
+          "required": ["method"],
+          "additionalProperties": false
+        },
+        "textureCompress": {
+          "type": "object",
+          "description": "Texture compression settings",
+          "properties": {
+            "format": {
+              "type": "string",
+              "enum": ["jpeg", "png", "webp", "auto"],
+              "description": "Output format for compressed textures"
+            },
+            "size": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4096,
+              "description": "Maximum texture size in pixels"
+            },
+            "quality": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "description": "Compression quality (1-100, higher = better quality)"
+            }
+          },
+          "additionalProperties": false
+        },
+        "instance": {
+          "type": "object",
+          "description": "Instancing optimization settings",
+          "properties": {
+            "min": {
+              "type": "integer",
+              "minimum": 2,
+              "description": "Minimum number of instances required for optimization"
+            }
+          },
+          "additionalProperties": false
+        },
+        "resample": {
+          "type": "object",
+          "description": "Animation resampling settings",
+          "properties": {
+            "tolerance": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Tolerance for reducing animation keyframes"
+            }
+          },
+          "additionalProperties": false
+        },
+        "simplify": {
+          "type": "object",
+          "description": "Mesh simplification settings",
+          "properties": {
+            "ratio": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Target ratio of vertices to retain (0.75 = keep 75%)"
+            },
+            "error": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Maximum error tolerance for simplification"
+            }
+          },
+          "additionalProperties": false
+        },
+        "flatten": {
+          "type": "boolean",
+          "description": "Flatten node hierarchy where possible"
+        },
+        "dedup": {
+          "type": "boolean",
+          "description": "Remove duplicate vertices and meshes"
+        },
+        "weld": {
+          "type": "boolean",
+          "description": "Weld nearby vertices"
+        },
+        "reorder": {
+          "type": "boolean",
+          "description": "Reorder vertices for better GPU cache usage"
+        },
+        "prune": {
+          "type": "boolean",
+          "description": "Remove unused nodes, materials and other resources"
+        }
+      },
+      "additionalProperties": false
+    },
+    "custom": {
+      "type": "object",
+      "description": "Custom compression settings for specific models (key = model filename without extension)",
+      "patternProperties": {
+        "^[^/\\\\]+$": {
+          "type": "object",
+          "description": "Compression settings for specific model (override default settings)",
+          "properties": {
+            "draco": {
+              "$ref": "#/properties/default/properties/draco"
+            },
+            "textureCompress": {
+              "$ref": "#/properties/default/properties/textureCompress"
+            },
+            "instance": {
+              "$ref": "#/properties/default/properties/instance"
+            },
+            "resample": {
+              "$ref": "#/properties/default/properties/resample"
+            },
+            "simplify": {
+              "$ref": "#/properties/default/properties/simplify"
+            },
+            "flatten": {
+              "$ref": "#/properties/default/properties/flatten"
+            },
+            "dedup": {
+              "$ref": "#/properties/default/properties/dedup"
+            },
+            "weld": {
+              "$ref": "#/properties/default/properties/weld"
+            },
+            "reorder": {
+              "$ref": "#/properties/default/properties/reorder"
+            },
+            "prune": {
+              "$ref": "#/properties/default/properties/prune"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["default"],
+  "additionalProperties": false
+}

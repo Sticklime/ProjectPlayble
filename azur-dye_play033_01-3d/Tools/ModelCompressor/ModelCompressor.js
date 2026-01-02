@@ -1,0 +1,529 @@
+/**
+ * @fileoverview 3D model compression utility
+ * @description Compresses GLB/GLTF files in Data directory and extracts anchor points
+ */
+
+const fs = require("fs");
+const path = require("path");
+const { NodeIO } = require("@gltf-transform/core");
+const { ALL_EXTENSIONS } = require("@gltf-transform/extensions");
+const draco3d = require("draco3d");
+const meshoptimizer = require("meshoptimizer");
+const sharp = require("sharp");
+const {
+  prune,
+  dedup,
+  resample,
+  weld,
+  instance,
+  draco,
+  reorder,
+  flatten,
+  simplify,
+  textureCompress,
+} = require("@gltf-transform/functions");
+const { Vector3, Quaternion, Matrix4 } = require("three");
+
+/**
+ * GLB/GLTF compression class
+ * Processes 3D models with optimization methods and extracts anchor information
+ */
+class GLBCompressor {
+  /**
+   * GLBCompressor constructor
+   * Initializes file paths and loads compression configuration
+   */
+  constructor() {
+    this.projectRoot = path.resolve(__dirname, "../..");
+    this.configPath = path.join(__dirname, "config.json");
+    this.dataDirectory = path.join(this.projectRoot, "Data");
+    this.anchorsFilePath = path.join(
+      this.projectRoot,
+      "App/Generated/AnchorKeeper.ts",
+    );
+    this.modelAnchors = {};
+    this.compressionConfig = this.loadCompressionConfig();
+    this.totalOriginalSize = 0;
+    this.totalCompressedSize = 0;
+  }
+
+  /**
+   * Loads compression configuration from JSON file
+   * @returns {Object} Configuration object
+   * @throws {Error} If configuration file not found
+   */
+  loadCompressionConfig() {
+    if (!fs.existsSync(this.configPath)) {
+      throw new Error(
+        "Missing model-compression-config.json in configs directory.",
+      );
+    }
+    return JSON.parse(fs.readFileSync(this.configPath, "utf8"));
+  }
+
+  /**
+   * Находит все несжатые GLB файлы в директории Data
+   *
+   * Рекурсивно сканирует директорию и возвращает пути к файлам,
+   * которые заканчиваются на .glb, но не содержат суффикс _compressed
+   *
+   * @returns {string[]} Массив путей к несжатым GLB файлам
+   */
+  findUncompressedGLBFiles() {
+    const allFiles = this.walkDirectory(this.dataDirectory);
+    return allFiles.filter((filePath) => {
+      const fileName = path.basename(filePath);
+      return fileName.endsWith(".glb") && !fileName.endsWith("_compressed.glb");
+    });
+  }
+
+  /**
+   * Рекурсивно обходит директорию и собирает все файлы
+   *
+   * @param {string} directory - Путь к директории для сканирования
+   * @returns {string[]} Массив путей ко всем найденным файлам
+   */
+  walkDirectory(directory) {
+    const entries = fs.readdirSync(directory, { withFileTypes: true });
+    const files = [];
+
+    for (const entry of entries) {
+      const fullPath = path.join(directory, entry.name);
+      if (entry.isDirectory()) {
+        files.push(...this.walkDirectory(fullPath));
+      } else {
+        files.push(fullPath);
+      }
+    }
+
+    return files;
+  }
+
+  /**
+   * Создает и настраивает экземпляр NodeIO для работы с GLTF/GLB файлами
+   *
+   * Инициализирует необходимые модули компрессии:
+   * - Draco encoder для геометрической компрессии
+   * - Meshoptimizer для оптимизации мешей
+   *
+   * @returns {Promise<NodeIO>} Настроенный экземпляр NodeIO
+   */
+  async createGLTFIO() {
+    const dracoEncoder = await draco3d.createEncoderModule();
+    const dracoDecoder = await draco3d.createDecoderModule();
+    await Promise.all([
+      meshoptimizer.MeshoptEncoder.ready,
+      meshoptimizer.MeshoptSimplifier.ready,
+    ]);
+
+    return new NodeIO()
+      .registerExtensions(ALL_EXTENSIONS)
+      .registerDependencies({
+        "draco3d.encoder": dracoEncoder,
+        "draco3d.decoder": dracoDecoder,
+      });
+  }
+
+  /**
+   * Извлекает якоря (анкоры) из 3D-модели
+   *
+   * Находит все ноды, имена которых начинаются с "ANC_" и извлекает
+   * их трансформации (позиция, поворот, масштаб).
+   *
+   * Якоря используются для привязки интерактивных элементов или
+   * других объектов к определенным точкам на 3D-модели.
+   *
+   * @param {Document} document - GLTF документ
+   * @param {string} modelName - Имя модели (без расширения)
+   */
+  extractAnchors(document, modelName) {
+    const anchorNodes = document
+      .getRoot()
+      .listNodes()
+      .filter((node) => node.getName().startsWith("ANC_"));
+
+    if (anchorNodes.length === 0) {
+      return;
+    }
+
+    const anchors = {};
+    anchorNodes.forEach((node) => {
+      const transformMatrix = new Matrix4();
+      transformMatrix.fromArray(node.getMatrix());
+
+      const position = new Vector3();
+      const quaternion = new Quaternion();
+      const scale = new Vector3();
+      transformMatrix.decompose(position, quaternion, scale);
+
+      anchors[node.getName()] = {
+        position: position.toArray(),
+        quaternion: quaternion.toArray(),
+        scale: scale.toArray(),
+      };
+    });
+
+    this.modelAnchors[modelName] = anchors;
+    console.log(`📦 Found ${anchorNodes.length} anchors in ${modelName}.glb`);
+  }
+
+  /**
+   * Получает конфигурацию компрессии для конкретной модели
+   *
+   * Объединяет дефолтные настройки с кастомными настройками
+   * для конкретной модели (если они заданы).
+   *
+   * @param {string} modelName - Имя модели
+   * @returns {Object} Объединенная конфигурация компрессии
+   */
+  getModelConfig(modelName) {
+    const defaultConfig = this.compressionConfig.default;
+    const customConfig = this.compressionConfig.custom?.[modelName] || {};
+
+    return {
+      ...defaultConfig,
+      ...customConfig,
+    };
+  }
+
+  /**
+   * Применяет трансформации компрессии к GLTF документу
+   *
+   * Последовательно применяет различные методы оптимизации согласно конфигурации:
+   *
+   * - flatten: Удаляет иерархию нод, оставляя только необходимые
+   * - resample: Оптимизирует анимации путем уменьшения количества ключевых кадров
+   * - dedup: Удаляет дублирующиеся вершины, материалы и текстуры
+   * - weld: Объединяет близко расположенные вершины
+   * - simplify: Упрощает геометрию, уменьшая количество полигонов
+   * - reorder: Переупорядочивает данные для лучшего сжатия
+   * - instance: Создает инстансы для повторяющейся геометрии
+   * - draco: Применяет Draco компрессию к геометрии
+   * - textureCompress: Сжимает и изменяет размер текстур
+   * - prune: Удаляет неиспользуемые ресурсы
+   *
+   * @param {Document} document - GLTF документ для обработки
+   * @param {string} modelName - Имя модели для получения конфигурации
+   */
+  async applyCompressionTransforms(document, modelName) {
+    const config = this.getModelConfig(modelName);
+
+    if (config.flatten) {
+      await document.transform(flatten());
+    }
+    if (config.resample) {
+      await document.transform(
+        resample({ tolerance: config.resample.tolerance }),
+      );
+    }
+    if (config.dedup) {
+      await document.transform(dedup());
+    }
+    if (config.weld) {
+      await document.transform(weld({ cleanup: false }));
+    }
+    if (config.simplify) {
+      await document.transform(
+        simplify({
+          simplifier: meshoptimizer.MeshoptSimplifier,
+          ratio: config.simplify.ratio,
+          error: config.simplify.error,
+        }),
+      );
+    }
+    if (config.reorder) {
+      await document.transform(
+        reorder({ encoder: meshoptimizer.MeshoptEncoder }),
+      );
+    }
+    if (config.instance) {
+      await document.transform(instance({ min: config.instance.min }));
+    }
+    if (config.draco) {
+      await document.transform(draco(config.draco));
+    }
+    if (config.textureCompress) {
+      await document.transform(
+        textureCompress({
+          encoder: sharp,
+          targetFormat: config.textureCompress.format,
+          resize: Array.isArray(config.textureCompress.size)
+            ? config.textureCompress.size
+            : [config.textureCompress.size, config.textureCompress.size],
+          quality: config.textureCompress.quality,
+        }),
+      );
+    }
+    if (config.prune) {
+      await document.transform(prune());
+    }
+  }
+
+  /**
+   * Форматирует размер файла в человекочитаемом формате
+   *
+   * @param {number} bytes - Размер в байтах
+   * @returns {string} Отформатированный размер (например, "1.23 MB")
+   */
+  formatFileSize(bytes) {
+    if (bytes === 0) return "0 B";
+
+    const units = ["B", "KB", "MB", "GB"];
+    const k = 1024;
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return (bytes / Math.pow(k, i)).toFixed(2) + " " + units[i];
+  }
+
+  /**
+   * Обрабатывает отдельный GLB файл
+   *
+   * Выполняет полный цикл обработки:
+   * 1. Загружает GLB файл
+   * 2. Извлекает якоря
+   * 3. Применяет компрессию
+   * 4. Сохраняет результат с суффиксом _compressed
+   * 5. Отслеживает размеры файлов для статистики
+   *
+   * @param {string} filePath - Путь к исходному GLB файлу
+   */
+  async processGLBFile(filePath) {
+    const inputFile = filePath;
+    const directory = path.dirname(inputFile);
+    const baseName = path.basename(filePath, ".glb");
+    const outputFile = path.join(directory, `${baseName}_compressed.glb`);
+
+    console.log(
+      `➡️  Compressing: ${path.relative(this.dataDirectory, filePath)}`,
+    );
+
+    // Получаем размер оригинального файла
+    const originalStats = fs.statSync(inputFile);
+    const originalSize = originalStats.size;
+    this.totalOriginalSize += originalSize;
+
+    const io = await this.createGLTFIO();
+    const document = await io.read(inputFile);
+
+    this.extractAnchors(document, baseName);
+    await this.applyCompressionTransforms(document, baseName);
+    await io.write(outputFile, document);
+
+    // Получаем размер сжатого файла
+    const compressedStats = fs.statSync(outputFile);
+    const compressedSize = compressedStats.size;
+    this.totalCompressedSize += compressedSize;
+
+    // Вычисляем процент сжатия
+    const compressionRatio = (
+      ((originalSize - compressedSize) / originalSize) *
+      100
+    ).toFixed(1);
+    const compressionInfo =
+      compressedSize < originalSize
+        ? `(-${compressionRatio}%)`
+        : `(+${Math.abs(compressionRatio)}%)`;
+
+    console.log(
+      `✅ Written: ${path.relative(this.dataDirectory, outputFile)} ` +
+        `${this.formatFileSize(compressedSize)} ${compressionInfo}`,
+    );
+  }
+
+  /**
+   * Записывает извлеченные якоря в TypeScript файл
+   *
+   * Создает файл App/Generated/AnchorKeeper.ts с экспортированным
+   * классом AnchorKeeper, содержащим все найденные якоря из обработанных моделей.
+   *
+   * Формат выходного файла:
+   * export class AnchorKeeper {
+   *   public static readonly modelName = {
+   *     "ANC_point1": {
+   *       position: new Vector3(x, y, z),
+   *       quaternion: new Quaternion(x, y, z, w),
+   *       scale: new Vector3(x, y, z)
+   *     }
+   *   };
+   * }
+   */
+  writeAnchorsFile() {
+    if (Object.keys(this.modelAnchors).length === 0) {
+      return;
+    }
+
+    const lines = [];
+
+    // Add header
+    lines.push("// Auto-generated by Tools/compress-models.js");
+    lines.push(
+      "// Do not edit manually - this file is regenerated automatically",
+    );
+    lines.push("");
+    lines.push('import { Vector3, Quaternion } from "three";');
+    lines.push("");
+    lines.push("/**");
+    lines.push(
+      " * AnchorKeeper provides type-safe access to all 3D model anchor points",
+    );
+    lines.push(
+      " * Anchors are extracted during model compression and provide transform data",
+    );
+    lines.push(" */");
+    lines.push("export class AnchorKeeper {");
+
+    // Generate static fields for each model's anchors
+    for (const [modelName, anchors] of Object.entries(this.modelAnchors)) {
+      const anchorCount = Object.keys(anchors).length;
+      lines.push("");
+      lines.push(`  /**`);
+      lines.push(`   * Anchor points for ${modelName} model`);
+      lines.push(
+        `   * Contains ${anchorCount} anchor${anchorCount === 1 ? "" : "s"}`,
+      );
+      lines.push(`   */`);
+
+      // Convert arrays to Three.js objects
+      const processedAnchors = {};
+      for (const [anchorName, anchorData] of Object.entries(anchors)) {
+        processedAnchors[anchorName] = {
+          position: `new Vector3(${anchorData.position.join(", ")})`,
+          quaternion: `new Quaternion(${anchorData.quaternion.join(", ")})`,
+          scale: `new Vector3(${anchorData.scale.join(", ")})`,
+        };
+      }
+
+      // Generate the static field with proper formatting
+      lines.push(
+        `  public static readonly ${this.sanitizePropertyName(modelName)} = {`,
+      );
+
+      for (const [anchorName, anchorData] of Object.entries(processedAnchors)) {
+        lines.push(`    "${anchorName}": {`);
+        lines.push(`      position: ${anchorData.position},`);
+        lines.push(`      quaternion: ${anchorData.quaternion},`);
+        lines.push(`      scale: ${anchorData.scale},`);
+        lines.push(`    },`);
+      }
+
+      lines.push(`  };`);
+    }
+
+    lines.push("}");
+
+    const outputContent = lines.join("\n") + "\n";
+
+    fs.mkdirSync(path.dirname(this.anchorsFilePath), { recursive: true });
+    fs.writeFileSync(this.anchorsFilePath, outputContent);
+    console.log("📁 All anchors written to App/Generated/AnchorKeeper.ts");
+  }
+
+  /**
+   * Sanitize property names for TypeScript
+   * Convert non-alphanumeric characters to valid identifiers
+   */
+  sanitizePropertyName(name) {
+    // Remove file extension if present
+    const baseName = name.replace(/\.(glb|gltf)$/i, "");
+
+    // If name is already a valid identifier, return as-is
+    if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(baseName)) {
+      return baseName;
+    }
+
+    // Convert to camelCase by replacing non-alphanumeric chars
+    return baseName
+      .replace(/[^a-zA-Z0-9]+(.)/g, (_, char) => char.toUpperCase())
+      .replace(/^[^a-zA-Z_$]/, "_");
+  }
+
+  /**
+   * Обрабатывает все найденные GLB файлы
+   *
+   * Основной метод, который:
+   * 1. Находит все несжатые GLB файлы
+   * 2. Обрабатывает каждый файл (кроме Images.glb)
+   * 3. Записывает файл с якорями
+   * 4. Выводит статистику размеров файлов
+   *
+   * Примечание: Images.glb пропускается, так как обычно содержит
+   * только текстуры без геометрии.
+   */
+  async processAllFiles() {
+    const glbFiles = this.findUncompressedGLBFiles();
+
+    if (glbFiles.length === 0) {
+      console.log("No uncompressed .glb files found in /Data");
+      return;
+    }
+
+    console.log(`🎯 Found ${glbFiles.length} models to process`);
+
+    let processed = 0;
+    let failed = 0;
+
+    for (const filePath of glbFiles) {
+      try {
+        if (!filePath.includes("Images.glb")) {
+          await this.processGLBFile(filePath);
+          processed++;
+        }
+      } catch (error) {
+        console.error(
+          `❌ Failed: ${path.relative(this.dataDirectory, filePath)}\n`,
+          error instanceof Error ? error.message : error,
+        );
+        failed++;
+      }
+    }
+
+    this.writeAnchorsFile();
+
+    console.log(`\n✨ Processing complete:`);
+    console.log(`   ✅ Processed: ${processed}`);
+    if (failed > 0) {
+      console.log(`   ❌ Failed: ${failed}`);
+    }
+
+    // Показываем статистику размеров файлов
+    if (processed > 0) {
+      const totalSavings = this.totalOriginalSize - this.totalCompressedSize;
+      const totalCompressionRatio = (
+        (totalSavings / this.totalOriginalSize) *
+        100
+      ).toFixed(1);
+
+      console.log(`\n📊 Size Analysis:`);
+      console.log(
+        `   📁 Original total: ${this.formatFileSize(this.totalOriginalSize)}`,
+      );
+      console.log(
+        `   📦 Compressed total: ${this.formatFileSize(this.totalCompressedSize)}`,
+      );
+
+      if (totalSavings > 0) {
+        console.log(
+          `   💾 Space saved: ${this.formatFileSize(totalSavings)} (${totalCompressionRatio}%)`,
+        );
+      } else if (totalSavings < 0) {
+        console.log(
+          `   📈 Size increased: ${this.formatFileSize(Math.abs(totalSavings))} (+${Math.abs(totalCompressionRatio)}%)`,
+        );
+      } else {
+        console.log(`   ⚖️  Size unchanged`);
+      }
+    }
+  }
+}
+
+/**
+ * Запуск процесса компрессии
+ *
+ * Создает экземпляр компрессора и запускает обработку всех файлов.
+ * В случае критической ошибки завершает процесс с кодом 1.
+ */
+const compressor = new GLBCompressor();
+compressor.processAllFiles().catch((error) => {
+  console.error("Fatal error:", error);
+  process.exit(1);
+});
