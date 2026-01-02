@@ -1,0 +1,155 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "config.schema.json",
+  "title": "Схема конфигурации сжатия изображений",
+  "description": "Схема для настройки параметров сжатия изображений различных форматов",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Ссылка на JSON схему для валидации"
+    },
+    "_comment": {
+      "type": "string",
+      "description": "Необязательный комментарий, описывающий назначение этого конфигурационного файла"
+    },
+    "_description": {
+      "type": "array",
+      "description": "Необязательный массив строк с подробным описанием конфигурации",
+      "items": {
+        "type": "string"
+      }
+    },
+    "default": {
+      "type": "object",
+      "description": "Настройки сжатия по умолчанию, применяемые ко всем изображениям",
+      "properties": {
+        "maxSize": {
+          "type": "object",
+          "description": "Настройки максимального размера изображения",
+          "properties": {
+            "width": {
+              "type": ["integer", "null"],
+              "minimum": 1,
+              "maximum": 16384,
+              "description": "Максимальная ширина изображения в пикселях (null = без ограничений)"
+            },
+            "height": {
+              "type": ["integer", "null"],
+              "minimum": 1,
+              "maximum": 16384,
+              "description": "Максимальная высота изображения в пикселях (null = без ограничений)"
+            },
+            "fit": {
+              "type": "string",
+              "enum": ["cover", "contain", "fill", "inside", "outside"],
+              "default": "inside",
+              "description": "Метод подгонки изображения при изменении размера"
+            },
+            "withoutEnlargement": {
+              "type": "boolean",
+              "default": true,
+              "description": "Не увеличивать изображения меньшего размера"
+            }
+          },
+          "additionalProperties": false
+        },
+        "quality": {
+          "type": "object",
+          "description": "Настройки качества сжатия для разных типов изображений",
+          "properties": {
+            "opaque": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "description": "Качество сжатия для непрозрачных изображений (1-100, выше = лучше качество)"
+            },
+            "transparent": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "description": "Качество сжатия для изображений с прозрачностью (1-100, выше = лучше качество)"
+            }
+          },
+          "required": ["opaque", "transparent"],
+          "additionalProperties": false
+        },
+        "outputFormat": {
+          "type": "object",
+          "description": "Настройки выходного формата для разных типов изображений",
+          "properties": {
+            "opaque": {
+              "type": "string",
+              "enum": ["jpg", "jpeg", "webp", "none"],
+              "description": "Выходной формат для непрозрачных изображений (none = оставить исходный формат)"
+            },
+            "transparent": {
+              "type": "string",
+              "enum": ["png", "webp", "none"],
+              "description": "Выходной формат для изображений с прозрачностью (none = оставить исходный формат)"
+            }
+          },
+          "required": ["opaque", "transparent"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["quality", "outputFormat"],
+      "additionalProperties": false
+    },
+    "custom": {
+      "type": "object",
+      "description": "Пользовательские настройки сжатия для конкретных изображений (ключ = имя файла изображения без расширения)",
+      "patternProperties": {
+        "^[^/\\\\]+$": {
+          "type": "object",
+          "description": "Настройки сжатия для конкретного изображения (переопределяют настройки по умолчанию)",
+          "properties": {
+            "maxSize": {
+              "type": "object",
+              "description": "Настройки максимального размера для данного изображения",
+              "properties": {
+                "width": {
+                  "type": ["integer", "null"],
+                  "minimum": 1,
+                  "maximum": 16384,
+                  "description": "Максимальная ширина изображения в пикселях"
+                },
+                "height": {
+                  "type": ["integer", "null"],
+                  "minimum": 1,
+                  "maximum": 16384,
+                  "description": "Максимальная высота изображения в пикселях"
+                },
+                "fit": {
+                  "type": "string",
+                  "enum": ["cover", "contain", "fill", "inside", "outside"],
+                  "description": "Метод подгонки изображения при изменении размера"
+                },
+                "withoutEnlargement": {
+                  "type": "boolean",
+                  "description": "Не увеличивать изображения меньшего размера"
+                }
+              },
+              "additionalProperties": false
+            },
+            "quality": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "description": "Качество сжатия для данного изображения (применяется к обоим типам - прозрачным и непрозрачным)"
+            },
+            "outputFormat": {
+              "type": "string",
+              "enum": ["jpg", "jpeg", "png", "webp", "none"],
+              "description": "Выходной формат для данного изображения (переопределяет формат для всех типов изображений, none = оставить исходный формат)"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["default"],
+  "additionalProperties": false
+}

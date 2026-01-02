@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2021", "DOM"],
+    "target": "ES2020",
+    "module": "ESNext",
+    "allowJs": true,
+    "checkJs": false,
+    "strict": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "useDefineForClassFields": true,
+    "strictNullChecks": true,
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "App/*",
+        "App/Screens/*",
+        "App/Libs/Broadcast/*",
+        "App/Libs/Pixi.Classes/*",
+        "App/Libs/Three/*"
+      ]
+    }
+  },
+  "include": ["App/**/*"]
+}

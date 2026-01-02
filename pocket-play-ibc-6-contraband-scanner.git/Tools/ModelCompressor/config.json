@@ -1,0 +1,49 @@
+{
+  "$schema": "./config.schema.json",
+  "_comment": "3D model compression configuration file",
+  "_description": [
+    "This file controls GLB/GLTF file compression parameters.",
+    "The 'default' section contains settings applied to all models.",
+    "The 'custom' section allows overriding settings for specific models.",
+    "Model name in 'custom' section must match filename without .glb extension"
+  ],
+  "default": {
+    "draco": {
+      "method": "edgebreaker",
+      "encodeSpeed": 0,
+      "decodeSpeed": 5,
+      "quantizePosition": 10,
+      "quantizeNormal": 8,
+      "quantizeTexcoord": 10,
+      "quantizeColor": 2,
+      "quantizeGeneric": 2,
+      "quantizationVolume": "mesh"
+    },
+    "textureCompress": {
+      "format": "webp",
+      "size": 256,
+      "quality": 90
+    },
+    "instance": {
+      "min": 2
+    },
+    "resample": {
+      "tolerance": 0.001
+    },
+    "simplify": {
+      "ratio": 0.99,
+      "error": 0.001
+    },
+    "flatten": true,
+    "dedup": true,
+    "weld": true,
+    "reorder": true,
+    "prune": true
+  },
+  "custom": {
+    "Cars": {
+      "flatten": false,
+      "dedup": false
+    }
+  }
+}

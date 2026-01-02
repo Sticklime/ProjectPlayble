@@ -1,0 +1,220 @@
+{"frames": {
+
+"T_Siren_01.png":
+{
+	"frame": {"x":1,"y":1,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_02.png":
+{
+	"frame": {"x":1,"y":328,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_03.png":
+{
+	"frame": {"x":1,"y":655,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_04.png":
+{
+	"frame": {"x":1,"y":982,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_05.png":
+{
+	"frame": {"x":1,"y":1309,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_06.png":
+{
+	"frame": {"x":1,"y":1636,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_07.png":
+{
+	"frame": {"x":328,"y":1,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_08.png":
+{
+	"frame": {"x":328,"y":328,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_09.png":
+{
+	"frame": {"x":328,"y":655,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_10.png":
+{
+	"frame": {"x":328,"y":982,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_11.png":
+{
+	"frame": {"x":328,"y":1309,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_12.png":
+{
+	"frame": {"x":328,"y":1636,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_13.png":
+{
+	"frame": {"x":655,"y":1,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_14.png":
+{
+	"frame": {"x":655,"y":328,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_15.png":
+{
+	"frame": {"x":655,"y":655,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_16.png":
+{
+	"frame": {"x":655,"y":982,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_17.png":
+{
+	"frame": {"x":655,"y":1309,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_18.png":
+{
+	"frame": {"x":655,"y":1636,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_19.png":
+{
+	"frame": {"x":982,"y":1,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_20.png":
+{
+	"frame": {"x":982,"y":328,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_21.png":
+{
+	"frame": {"x":982,"y":655,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_22.png":
+{
+	"frame": {"x":982,"y":982,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_23.png":
+{
+	"frame": {"x":982,"y":1309,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_24.png":
+{
+	"frame": {"x":982,"y":1636,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_25.png":
+{
+	"frame": {"x":1309,"y":1,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+},
+"T_Siren_26.png":
+{
+	"frame": {"x":1309,"y":328,"w":325,"h":325},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":325,"h":325},
+	"sourceSize": {"w":325,"h":325}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "AT_Siren.png",
+	"format": "RGBA8888",
+	"size": {"w":1635,"h":1962},
+	"scale": "0.6",
+	"smartupdate": "$TexturePacker:SmartUpdate:be092be7d3afc2d06b0f97e81d82d112:330c2023d3b26938f1c4d5ceaa1acee6:637c017a137052861cb911c37ebfc891$"
+}
+}
