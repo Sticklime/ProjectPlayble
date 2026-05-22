@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Playable Ads — Portfolio</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --card: #1a1d27;
+      --border: #2a2f3d;
+      --text: #e8eaef;
+      --muted: #9aa3b5;
+      --accent: #6c9eff;
+      --accent-hover: #8ab4ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 24px 64px;
+    }
+    header { margin-bottom: 40px; }
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .subtitle a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .subtitle a:hover { text-decoration: underline; }
+    section { margin-bottom: 32px; }
+    h2 {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    ul { list-style: none; }
+    li {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 8px;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    li:hover {
+      border-color: var(--accent);
+      transform: translateX(4px);
+    }
+    a.demo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+      color: var(--text);
+      text-decoration: none;
+    }
+    a.demo span.label { font-weight: 500; }
+    a.demo span.arrow {
+      color: var(--accent);
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    a.demo:hover span.arrow { color: var(--accent-hover); }
+    footer {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    @media (max-width: 480px) {
+      .wrap { padding: 32px 16px 48px; }
+      h1 { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Playable Ads — Portfolio</h1>
+      <p class="subtitle">
+        HTML5 playable (Three.js, Webpack). Исходники:
+        <a href="https://github.com/Sticklime/ProjectPlayble" target="_blank" rel="noopener">GitHub</a>
+      </p>
+    </header>
+
+    <section>
+      <h2>Azur</h2>
+      <ul>
+        <li><a class="demo" href="azur-irons_play/dist/" target="_blank" rel="noopener"><span class="label">Irons Play</span><span class="arrow">→</span></a></li>
+        <li><a class="demo" href="azur-dye_play033_01-3d/dist/" target="_blank" rel="noopener"><span class="label">Dye — 3D</span><span class="arrow">→</span></a></li>
+        <li><a class="demo" href="azur-fash_play022_01-guys-walk/dist/" target="_blank" rel="noopener"><span class="label">Fashion — Guys Walk</span><span class="arrow">→</span></a></li>
+        <li><a class="demo" href="azur-fash_play024_01-crazy-outfit/dist/" target="_blank" rel="noopener"><span class="label">Fashion — Crazy Outfit</span><span class="arrow">→</span></a></li>
+        <li><a class="demo" href="azur-hair_play016_01.git/dist/" target="_blank" rel="noopener"><span class="label">Hair</span><span class="arrow">→</span></a></li>
+        <li><a class="demo" href="Azur-lay_play/dist/" target="_blank" rel="noopener"><span class="label">Lay Play</span><span class="arrow">→</span></a></li>
+        <li><a class="demo" href="azur-pf_play020_01-labubu/dist/" target="_blank" rel="noopener"><span class="label">PF — Labubu</span><span class="arrow">→</span></a></li>
+        <li><a class="demo" href="azur-pf_play021_01/dist/" target="_blank" rel="noopener"><span class="label">PF Play 021</span><span class="arrow">→</span></a></li>
+        <li><a class="demo" href="azur-star_play026_01.git/dist/" target="_blank" rel="noopener"><span class="label">Star</span><span class="arrow">→</span></a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Century Games</h2>
+      <ul>
+        <li><a class="demo" href="century-games-ts-req1-3d/dist/" target="_blank" rel="noopener"><span class="label">TS Req 1 — 3D</span><span class="arrow">→</span></a></li>
+        <li><a class="demo" href="century-games-ts-req2-3d/dist/" target="_blank" rel="noopener"><span class="label">TS Req 2 — 3D</span><span class="arrow">→</span></a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Другие</h2>
+      <ul>
+        <li><a class="demo" href="nice-plans-rs_playable_002_herobox-v1/dist/" target="_blank" rel="noopener"><span class="label">Nice Plans — Hero Box</span><span class="arrow">→</span></a></li>
+        <li><a class="demo" href="pocket-play-ibc-6-contraband-scanner.git/dist/" target="_blank" rel="noopener"><span class="label">Pocket Play — Contraband Scanner</span><span class="arrow">→</span></a></li>
+      </ul>
+    </section>
+
+    <footer>
+      Открывайте демо по ссылкам выше (через HTTPS). Если проект не загружается — в папке <code>dist</code> могут отсутствовать ассеты (Images, Sounds).
+    </footer>
+  </div>
+</body>
+</html>
