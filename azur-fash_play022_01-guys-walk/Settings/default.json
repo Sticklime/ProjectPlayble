@@ -128,7 +128,7 @@
 
 		//Модели
 		"scene_podium": {"type": "glb", "url": "Data/scene_podium.glb"},
-		"character": {"type": "fbx", "url": "Data/character_compressed.fbx"},
+		"character": {"type": "glb", "url": "Data/character_compressed.glb"},
 		"man": {"type": "glb", "url": "Data/man_compressed.glb"},
 
 		//UI
